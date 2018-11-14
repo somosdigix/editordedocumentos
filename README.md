@@ -3,5 +3,13 @@
 
 # Editor de Documento
 
-Editor de documentos docx para geração de relatórios 
+Framework desenvolvido para gerar relatorios no formato docx com mais facilidade
 
+para utilizar, adicione a dependencia abaixo ao seu pom
+``` sh
+<dependency>
+            <groupId>br.com.digix</groupId>
+            <artifactId>editordedocumento</artifactId>
+            <version>1.1.8</version>
+ </dependency> 
+ ```
