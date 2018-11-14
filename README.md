@@ -13,3 +13,4 @@ para utilizar, adicione a dependencia abaixo ao seu pom
    <version>1.1.8</version>
  </dependency> 
  ```
+https://search.maven.org/artifact/br.com.digix/editordedocumento/1.1.8/jar
