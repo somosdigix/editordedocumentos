@@ -3,18 +3,19 @@ package editor.docx;
 import editor.EditorDeArquivoDeTexto;
 import editor.docx.cabecalho.EditorDeCabecalho;
 import editor.docx.paragrafo.EditorDeParagrafo;
+import editor.docx.rodape.AdicionaNotaDeRodape;
+import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import editor.docx.rodape.EditorDeRodape;
 import editor.docx.tabela.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import utils.ReflectionUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
 
@@ -25,9 +26,10 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
     private EditorDeRodape editorDeRodape;
     private EditorDeCabecalho editorDeCabecalho;
     private AdicionaLinhaNaTabelaDoDocumentoDeTexto adicionaLinhaNaTabelaDoDocumentoDeTexto;
+    private AdicionaNotaDeRodape adicionaNotaDeRodape;
 
     public EditorDeArquivoDeTexto docxComTabelas(Object[] dadosParaMontarAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
-        if (dadosParaMontarAsTabelasDoDocumento != null) {
+        if (Objects.nonNull(dadosParaMontarAsTabelasDoDocumento)) {
             List<Tabela> tabelasParaDocumentoDeTextos = MontadorDeTabelas.montar(dadosParaMontarAsTabelasDoDocumento);
             this.adicionaLinhaNaTabelaDoDocumentoDeTexto = AdicionaLinhaNaTabelaDoDocumentoDeTexto.comTabelas(tabelasParaDocumentoDeTextos, formatacaoDaTabelas);
         }
@@ -35,9 +37,17 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
     }
 
     public EditorDeArquivoDeTexto docxComTabelas(List<Map<String, Object>> dadosParaMontarAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
-        if (dadosParaMontarAsTabelasDoDocumento != null) {
+        if (Objects.nonNull(dadosParaMontarAsTabelasDoDocumento)) {
             Tabela tabelasParaDocumentoDeTextos = MontadorDeTabelas.montarTabela(dadosParaMontarAsTabelasDoDocumento);
             this.adicionaLinhaNaTabelaDoDocumentoDeTexto = AdicionaLinhaNaTabelaDoDocumentoDeTexto.comTabelas(tabelasParaDocumentoDeTextos, formatacaoDaTabelas);
+        }
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, AlinhamentoDaNotaDeRodape... alinhamentoDaNotaDeRodape) {
+        if (Objects.nonNull(notaDeRodape)) {
+            Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNota = alinhamentoDaNotaDeRodape.length > 0 ? Optional.of(alinhamentoDaNotaDeRodape[0]) : Optional.empty();
+            this.adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaDeRodape, alinhamentoDaNota);
         }
         return this;
     }
@@ -143,12 +153,19 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
         editorDeTabela.editarConteudoDasTabelas(documentoDocx.getTables());
         adicionarConteudoNasTabelasDoDocumentoDeTexto(documentoDocx);
         editorDeRodape.editarConteudoDosRodapesDoDocumento(documentoDocx.getFooterList());
+        adicionarNotaDeRodape(documentoDocx.getFooterList());
         return documentoDocx;
     }
 
     private void adicionarConteudoNasTabelasDoDocumentoDeTexto(XWPFDocument documentoDocx) {
-        if (adicionaLinhaNaTabelaDoDocumentoDeTexto != null) {
+        if (Objects.nonNull(adicionaLinhaNaTabelaDoDocumentoDeTexto)) {
             adicionaLinhaNaTabelaDoDocumentoDeTexto.adicionarConteudoNasTabelasDoDocumentoDeTexto(documentoDocx.getTables());
+        }
+    }
+
+    private void adicionarNotaDeRodape(List<XWPFFooter> rodapesDoDocumento) {
+        if (Objects.nonNull(adicionaNotaDeRodape)) {
+            adicionaNotaDeRodape.adicionarNotaNosRodapes(rodapesDoDocumento);
         }
     }
 }

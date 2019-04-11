@@ -2,22 +2,19 @@ package editor.docx;
 
 import builder.RelatorioDeTesteBuilder;
 import editor.EditorDeArquivoDeTexto;
+import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -85,7 +82,6 @@ public class EditorDeArquivoDeTextoDocxTest {
         byte[] bytesDoTemplate = Files.readAllBytes(path);
         ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
         String tituloDoRelatorio = "Teste";
-
         Map<String, Object> dados = new HashMap<>();
         dados.put("cabecalhoDoRelatorio", "Relatório de teste");
         dados.put("tituloDoRelatorio", tituloDoRelatorio);
@@ -97,6 +93,40 @@ public class EditorDeArquivoDeTextoDocxTest {
         assertTrue(buscarPalavraNoDocumento(byteBuffer, tituloDoRelatorio));
     }
 
+    @Test
+    public void deveAdicionarUmaNotaDeRodapeNoDocumento() throws Exception {
+        Path path = Paths.get(PATH_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE);
+        byte[] bytesDoTemplate = Files.readAllBytes(path);
+        ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
+        RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
+        String notaDeRodape = "Gerado pelo editor.";
+
+        ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
+
+        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+    }
+
+    @Test
+    public void deveAdicionarUmaNotaDeRodapeComAlinhamentoNoDocumento() throws Exception {
+        Path path = Paths.get(PATH_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE);
+        byte[] bytesDoTemplate = Files.readAllBytes(path);
+        ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
+        RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
+        String notaDeRodape = "Gerado pelo editor de documento.";
+        AlinhamentoDaNotaDeRodape alinhamento = AlinhamentoDaNotaDeRodape.DIREITA;
+        ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape, alinhamento).editar(arquivoQueSeraEditado, relatorioDeTeste);
+
+        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+    }
+
+    private String obterTextoDaNotaDeRodapeAdicionadoNoDocumento(ByteBuffer byteBuffer) throws IOException {
+        XWPFDocument xwpfDocument = obterDocument(byteBuffer);
+        List<XWPFParagraph> paragrafosDoRodape = xwpfDocument.getFooterList().get(0).getListParagraph();
+        return paragrafosDoRodape.get(1).getText().replace("\n", "");
+    }
+
     private RelatorioDeTesteBuilder criarRelatorioDeTesteBuilderComTitulo(String tituloDoRelatorio) {
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
         relatorioDeTeste.informarTituloDoRelatorio(tituloDoRelatorio);
@@ -104,22 +134,36 @@ public class EditorDeArquivoDeTextoDocxTest {
     }
 
     private boolean buscarPalavraNoDocumento(File documento, String tituloDoRelatorio) throws Exception {
-        InputStream inputStream = new FileInputStream(documento);
-        return buscarPalavraNoDocumento(inputStream, tituloDoRelatorio);
+        XWPFDocument xwpfDocument = obterDocument(documento);
+        return buscarPalavraNoDocumento(xwpfDocument, tituloDoRelatorio);
     }
 
     private boolean buscarPalavraNoDocumento(OutputStream documento, String tituloDoRelatorio) throws Exception {
-        InputStream inputStream = new ByteArrayInputStream(((ByteArrayOutputStream) documento).toByteArray());
-        return buscarPalavraNoDocumento(inputStream, tituloDoRelatorio);
+        XWPFDocument xwpfDocument = obterDocument(documento);
+        return buscarPalavraNoDocumento(xwpfDocument, tituloDoRelatorio);
     }
 
     private boolean buscarPalavraNoDocumento(ByteBuffer documento, String tituloDoRelatorio) throws Exception {
-        InputStream inputStream = new ByteArrayInputStream(documento.array());
-        return buscarPalavraNoDocumento(inputStream, tituloDoRelatorio);
+        XWPFDocument xwpfDocument = obterDocument(documento);
+        return buscarPalavraNoDocumento(xwpfDocument, tituloDoRelatorio);
     }
 
-    private boolean buscarPalavraNoDocumento(InputStream arquivoEditado, String palavraASerProcurada) throws Exception {
-        XWPFDocument documentoDocx = new XWPFDocument(arquivoEditado);
+    private XWPFDocument obterDocument(File documento) throws IOException {
+        InputStream inputStream = new FileInputStream(documento);
+        return new XWPFDocument(inputStream);
+    }
+
+    private XWPFDocument obterDocument(OutputStream documento) throws IOException {
+        InputStream inputStream = new ByteArrayInputStream(((ByteArrayOutputStream) documento).toByteArray());
+        return new XWPFDocument(inputStream);
+    }
+
+    private XWPFDocument obterDocument(ByteBuffer documento) throws IOException {
+        InputStream inputStream = new ByteArrayInputStream(documento.array());
+        return new XWPFDocument(inputStream);
+    }
+
+    private boolean buscarPalavraNoDocumento(XWPFDocument documentoDocx, String palavraASerProcurada) throws Exception {
         boolean palavraEncontrada = documentoDocx.getParagraphs().stream().anyMatch(paragrafo -> buscarPalavraNoParagrafo(paragrafo, palavraASerProcurada));
         documentoDocx.close();
         return palavraEncontrada;
