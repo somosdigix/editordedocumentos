@@ -2,9 +2,7 @@ package editor.docx.rodape;
 
 import java.util.List;
 
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.*;
 
 import editor.docx.paragrafo.EditorDeParagrafo;
 import editor.docx.tabela.EditorDeTabela;

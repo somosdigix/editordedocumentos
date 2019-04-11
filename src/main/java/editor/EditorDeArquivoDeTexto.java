@@ -2,6 +2,7 @@ package editor;
 
 import editor.docx.EditorDeArquivoDeTextoDocx;
 import editor.docx.ErroAoEditarArquivoDeTexto;
+import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import editor.docx.tabela.FormatacaoDaTabela;
 
 import java.io.File;
@@ -22,12 +23,12 @@ public abstract class EditorDeArquivoDeTexto {
     }
 
     public OutputStream editar(InputStream arquivoQueSeraEditado, Object dados) throws ErroAoEditarArquivoDeTexto {
-    	return editarArquivo(arquivoQueSeraEditado, dados);
-	}
+        return editarArquivo(arquivoQueSeraEditado, dados);
+    }
 
-	public ByteBuffer editar(ByteBuffer byteBuffer, Object object) throws ErroAoEditarArquivoDeTexto {
-		return editarArquivo(byteBuffer, object);
-	}
+    public ByteBuffer editar(ByteBuffer byteBuffer, Object object) throws ErroAoEditarArquivoDeTexto {
+        return editarArquivo(byteBuffer, object);
+    }
 
     public ByteBuffer editar(ByteBuffer byteBuffer, Map<String, Object> mapObjects) throws ErroAoEditarArquivoDeTexto {
         return editarArquivo(byteBuffer, mapObjects);
@@ -35,9 +36,9 @@ public abstract class EditorDeArquivoDeTexto {
 
     protected abstract void editarArquivo(File arquivoQueSeraEditado, Object object, String nomeDoArquivoDeSaida) throws ErroAoEditarArquivoDeTexto;
 
-	protected abstract OutputStream editarArquivo(InputStream arquivoQueSeraEditado, Object dados) throws ErroAoEditarArquivoDeTexto;
+    protected abstract OutputStream editarArquivo(InputStream arquivoQueSeraEditado, Object dados) throws ErroAoEditarArquivoDeTexto;
 
-	protected abstract ByteBuffer editarArquivo(ByteBuffer byteBuffer, Object dados) throws ErroAoEditarArquivoDeTexto;
+    protected abstract ByteBuffer editarArquivo(ByteBuffer byteBuffer, Object dados) throws ErroAoEditarArquivoDeTexto;
 
     protected abstract ByteBuffer editarArquivo(ByteBuffer byteBuffer, Map<String, Object> mapObjects) throws ErroAoEditarArquivoDeTexto;
 
@@ -48,13 +49,18 @@ public abstract class EditorDeArquivoDeTexto {
         return editorDeArquivoDeTexto;
     }
 
-    public EditorDeArquivoDeTexto docxComTabelas(Object[] listasDeObjetosParaAsTabelasDoDocumento, FormatacaoDaTabela...formatacaoDaTabelas) {
-        editorDeArquivoDeTexto.docxComTabelas(listasDeObjetosParaAsTabelasDoDocumento,formatacaoDaTabelas);
+    public EditorDeArquivoDeTexto docxComTabelas(Object[] listasDeObjetosParaAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
+        editorDeArquivoDeTexto.docxComTabelas(listasDeObjetosParaAsTabelasDoDocumento, formatacaoDaTabelas);
         return this;
     }
 
-    public EditorDeArquivoDeTexto docxComTabelas(List<Map<String, Object>> listasDeObjetosParaAsTabelasDoDocumento, FormatacaoDaTabela...formatacaoDaTabelas) {
-        editorDeArquivoDeTexto.docxComTabelas(listasDeObjetosParaAsTabelasDoDocumento,formatacaoDaTabelas);
+    public EditorDeArquivoDeTexto docxComTabelas(List<Map<String, Object>> listasDeObjetosParaAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
+        editorDeArquivoDeTexto.docxComTabelas(listasDeObjetosParaAsTabelasDoDocumento, formatacaoDaTabelas);
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, AlinhamentoDaNotaDeRodape... alinhamentoDaNotaDeRodape) {
+        editorDeArquivoDeTexto.comNotaDeRodape(notaDeRodape, alinhamentoDaNotaDeRodape);
         return this;
     }
 }
