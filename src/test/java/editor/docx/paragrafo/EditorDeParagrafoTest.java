@@ -1,53 +1,67 @@
 package editor.docx.paragrafo;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Assert;
 import org.junit.Test;
 
-import editor.docx.paragrafo.EditorDeParagrafo;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditorDeParagrafoTest {
 
-	@Test
-	public void deveEditarUmParagrafoDoTexto() throws Exception {
-		String conteudoDoTestoEsperado = "João do Pé de Feijão";
-		String atributoQueSeraAlteradoNoDocumento = "nomeDoFuncionario";
-		Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraAlteradoNoDocumento,
-				conteudoDoTestoEsperado);
-		XWPFDocument documento = new XWPFDocument();
-		XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, atributoQueSeraAlteradoNoDocumento);
+    @Test
+    public void deveEditarUmParagrafoDoTexto() throws Exception {
+        String conteudoDoTextoEsperado = "João do Pé de Feijão";
+        String atributoQueSeraAlteradoNoDocumento = "nomeDoFuncionario";
+        Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraAlteradoNoDocumento,
+                conteudoDoTextoEsperado);
+        XWPFDocument documento = new XWPFDocument();
+        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, atributoQueSeraAlteradoNoDocumento);
 
-		EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
-		String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTestoEsperado);
+        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
+        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
 
-		Assert.assertEquals(conteudoDoTestoEsperado, textoAdicionadoNoDocumento);
-	}
+        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
+    }
 
-	private XWPFParagraph criarParagrafoNoDocumento(XWPFDocument documento, String atributoQueSeraAlteradoNoDocumento) {
-		XWPFParagraph paragrafoDoDocumento = documento.createParagraph();
-		XWPFRun linhaDoDocumento = paragrafoDoDocumento.createRun();
-		linhaDoDocumento.setText(atributoQueSeraAlteradoNoDocumento);
-		return paragrafoDoDocumento;
-	}
+    @Test
+    public void deveEditarUmParagrafoNoTextoUsandoTagComDelimitadores() throws Exception {
+        String conteudoDoTextoEsperado = "Marquinhos DJ";
+        String atributoQueSeraSubstituido = "nomeDoDJDaFesta";
+        String tagQueSeraAlteradaNoDocumento = "${" + atributoQueSeraSubstituido + "}";
+        Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraSubstituido,
+                conteudoDoTextoEsperado);
+        XWPFDocument documento = new XWPFDocument();
+        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, tagQueSeraAlteradaNoDocumento);
 
-	private Map<String, Object> montarMapaDeAtributos(String tagNoDocumento, String conteudoDoTestoEsperado) {
-		Map<String, Object> mapaDeAtributos = new HashMap<>();
-		mapaDeAtributos.put(tagNoDocumento, conteudoDoTestoEsperado);
-		return mapaDeAtributos;
-	}
+        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
+        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
 
-	private String buscarPalavraNoArquivo(XWPFDocument documento, String conteudoParaBuscar) throws Exception {
-		return documento.getParagraphs().stream()
-				.filter(paragrafo -> verificarConteudoDoParagrafo(paragrafo, conteudoParaBuscar)).findFirst().get()
-				.getText();
-	}
+        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
+    }
 
-	private boolean verificarConteudoDoParagrafo(XWPFParagraph paragrafo, String conteudoParaBuscar) {
-		return paragrafo.getText().equals(conteudoParaBuscar);
-	}
+    private Map<String, Object> montarMapaDeAtributos(String tagNoDocumento, String conteudoDoTestoEsperado) {
+        Map<String, Object> mapaDeAtributos = new HashMap<>();
+        mapaDeAtributos.put(tagNoDocumento, conteudoDoTestoEsperado);
+        return mapaDeAtributos;
+    }
+
+    private XWPFParagraph criarParagrafoNoDocumento(XWPFDocument documento, String atributoQueSeraAlteradoNoDocumento) {
+        XWPFParagraph paragrafoDoDocumento = documento.createParagraph();
+        XWPFRun linhaDoDocumento = paragrafoDoDocumento.createRun();
+        linhaDoDocumento.setText(atributoQueSeraAlteradoNoDocumento);
+        return paragrafoDoDocumento;
+    }
+
+    private String buscarPalavraNoArquivo(XWPFDocument documento, String conteudoParaBuscar) throws Exception {
+        return documento.getParagraphs().stream()
+                .filter(paragrafo -> verificarConteudoDoParagrafo(paragrafo, conteudoParaBuscar)).findFirst().get()
+                .getText();
+    }
+
+    private boolean verificarConteudoDoParagrafo(XWPFParagraph paragrafo, String conteudoParaBuscar) {
+        return paragrafo.getText().equals(conteudoParaBuscar);
+    }
 }
