@@ -45,8 +45,9 @@ public class EditorDeParagrafo {
     }
 
     private void editarTagDoDocumento(XWPFRun linhaDoDocumento) {
-        String chaveParaSubstituicao = linhaDoDocumento.getText(INICIO_DA_TAG_NO_TEXTO);
-        if (Objects.nonNull(chaveParaSubstituicao) && mapaDeAtributos.containsKey(chaveParaSubstituicao)) {
+        String tagNoDocumento = linhaDoDocumento.getText(INICIO_DA_TAG_NO_TEXTO);
+        String chaveParaSubstituicao = tagNoDocumento.replace("${", "").replace("}", "");
+        if (Objects.nonNull(tagNoDocumento) && mapaDeAtributos.containsKey(chaveParaSubstituicao)) {
             String valorParaSubstituir = obterValorParaSubstituicao(chaveParaSubstituicao);
             linhaDoDocumento.setText(VAZIO, INICIO_DA_TAG_NO_TEXTO);
             String[] linhas = valorParaSubstituir.split(PULA_LINHA);
