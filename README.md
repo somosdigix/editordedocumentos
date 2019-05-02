@@ -50,6 +50,10 @@ versões:
   ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape,alinhamento).editar(arquivoQueSeraEditado, dados);
   ```
 
-https://search.maven.org/artifact/br.com.digix/editordedocumento
+- v2.2.0
+Para facilitar a leitura e manutenção dos templates agora temos dois modos de atribuição das tags no template docx, por meio de expressão e por atribuição direta: 
+   expressão: ${atributoQueSeraSubstituido}
+   atribuição direta: atributoQueSeraSubstituido
 
+https://search.maven.org/artifact/br.com.digix/editordedocumento
 
