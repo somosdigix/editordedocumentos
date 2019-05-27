@@ -121,6 +121,19 @@ public class EditorDeArquivoDeTextoDocxTest {
         assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
     }
 
+    @Test
+    public void deveAdicionarUmaNotaDeRodapeEmUmDocumentoSemRodape() throws Exception {
+        Path path = Paths.get("src/test/resources/documentoSemRodapeDeTeste.docx");
+        byte[] bytesDoTemplate = Files.readAllBytes(path);
+        ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
+        RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
+        String notaDeRodape = "Gerado pelo editor de documento.";
+        ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
+
+        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+    }
+
     private String obterTextoDaNotaDeRodapeAdicionadoNoDocumento(ByteBuffer byteBuffer) throws IOException {
         XWPFDocument xwpfDocument = obterDocument(byteBuffer);
         List<XWPFParagraph> paragrafosDoRodape = xwpfDocument.getFooterList().get(0).getListParagraph();
