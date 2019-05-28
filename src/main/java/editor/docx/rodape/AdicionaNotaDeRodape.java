@@ -8,11 +8,12 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
 public class AdicionaNotaDeRodape {
+
+    private static final Integer TAMANHO_PADRAO = 10;
 
     private String notaParaAdicionar;
     private Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape;
@@ -46,15 +47,15 @@ public class AdicionaNotaDeRodape {
             XWPFRun run = paragraph.createRun();
             run.addBreak();
             run.setText(this.notaParaAdicionar);
-            configurarTamanhoDaNota(run);
+            configurarTamanhoDaFonteDaNota(run);
         }
     }
 
-    private void configurarTamanhoDaNota(XWPFRun run) {
+    private void configurarTamanhoDaFonteDaNota(XWPFRun run) {
         if (this.alinhamentoDaNotaDeRodape.isPresent()) {
             run.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
         } else {
-            run.setFontSize(10);
+            run.setFontSize(TAMANHO_PADRAO);
         }
     }
 
