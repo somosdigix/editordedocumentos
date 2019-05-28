@@ -22,32 +22,31 @@ import static org.junit.Assert.assertTrue;
 
 public class EditorDeArquivoDeTextoDocxTest {
 
-    private static final String NOME_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE = "documentoDeTeste.docx";
-    private static final String PATH_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE = "src/test/resources/" + NOME_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE;
-    private static final String EXTENSAO_DO_ARQUIVO_ESPERADA = ".docx";
-    private static final String NOME_DO_ARQUIVO_DE_SAIDA = "arquivoDocxEditado";
-    private static final Integer UM = 1;
-    private static final String PONTO = ".";
+    private static final String PATH_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE = "src/test/resources/documentoDeTeste.docx";
 
     @Test
     public void deveSubstituirAsTagsNoDocxPelosValoresInformadosNoObjeto() throws Exception {
         File arquivoQueSeraEditado = new File(PATH_DO_ARQUIVO_DE_TEXTO_DOCX_PARA_TESTE);
+        String extensaoEsperada = ".docx";
         String tituloDoRelatorio = "Teste de cabecalho";
         RelatorioDeTesteBuilder relatorioDeTeste = criarRelatorioDeTesteBuilderComTitulo(tituloDoRelatorio);
+        String nomeDoArquivoDeSaida = "arquivoDocxEditado";
 
-        File arquivoEditado = EditorDeArquivoDeTexto.editarArquivoDocx().editar(arquivoQueSeraEditado, relatorioDeTeste, NOME_DO_ARQUIVO_DE_SAIDA);
+        File arquivoEditado = EditorDeArquivoDeTexto.editarArquivoDocx().editar(arquivoQueSeraEditado, relatorioDeTeste, nomeDoArquivoDeSaida);
         arquivoEditado.deleteOnExit();
 
         String extensaoDoEditalGerado = obterExtensaoDoArquivo(arquivoEditado);
         assertTrue(buscarPalavraNoDocumento(arquivoEditado, tituloDoRelatorio));
-        assertEquals(EXTENSAO_DO_ARQUIVO_ESPERADA, extensaoDoEditalGerado);
+        assertEquals(extensaoEsperada, extensaoDoEditalGerado);
     }
 
     @Test(expected = ErroAoEditarArquivoDeTexto.class)
     public void deveInformarQuandoEncontrarUmErroAoEditarODocumento() throws Exception {
         File arquivoQueSeraEditado = new File("");
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
-        EditorDeArquivoDeTexto.editarArquivoDocx().editar(arquivoQueSeraEditado, relatorioDeTeste, NOME_DO_ARQUIVO_DE_SAIDA);
+        String nomeDoArquivoDeSaida = "arquivoDocxEditado";
+
+        EditorDeArquivoDeTexto.editarArquivoDocx().editar(arquivoQueSeraEditado, relatorioDeTeste, nomeDoArquivoDeSaida);
     }
 
     @Test
@@ -115,6 +114,7 @@ public class EditorDeArquivoDeTextoDocxTest {
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
         String notaDeRodape = "Gerado pelo editor de documento.";
         AlinhamentoDaNotaDeRodape alinhamento = AlinhamentoDaNotaDeRodape.DIREITA;
+
         ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape, alinhamento).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
         String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
@@ -128,6 +128,7 @@ public class EditorDeArquivoDeTextoDocxTest {
         ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
         String notaDeRodape = "Gerado pelo editor de documento.";
+
         ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
         String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
@@ -194,6 +195,7 @@ public class EditorDeArquivoDeTextoDocxTest {
 
     public static String obterExtensaoDoArquivo(File arquivo) {
         String nomeDoArquivo = arquivo.getName();
-        return nomeDoArquivo.lastIndexOf(PONTO) != -1 ? PONTO.concat(nomeDoArquivo.substring(nomeDoArquivo.lastIndexOf(PONTO) + UM)) : "";
+        String pontoFinal = ".";
+        return nomeDoArquivo.lastIndexOf(pontoFinal) != -1 ? pontoFinal.concat(nomeDoArquivo.substring(nomeDoArquivo.lastIndexOf(pontoFinal) + 1)) : "";
     }
 }
