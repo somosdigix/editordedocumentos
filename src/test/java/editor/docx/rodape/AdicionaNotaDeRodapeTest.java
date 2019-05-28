@@ -36,8 +36,8 @@ public class AdicionaNotaDeRodapeTest {
         AdicionaNotaDeRodape adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaParaAdicionar, Optional.empty());
 
         adicionaNotaDeRodape.adicionarNotaNosRodapes(documento);
-        String textoAdicionadoNoDocumento = buscarTextoDaNotaAdicionandaNoRodape(documento.getFooterList().get(0));
 
+        String textoAdicionadoNoDocumento = buscarTextoDaNotaAdicionandaNoRodape(documento.getFooterList().get(0));
         assertEquals(notaParaAdicionar, textoAdicionadoNoDocumento);
     }
 
@@ -48,9 +48,9 @@ public class AdicionaNotaDeRodapeTest {
         AdicionaNotaDeRodape adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaParaAdicionar, alinhamentoDaNotaDeRodape);
 
         adicionaNotaDeRodape.adicionarNotaNosRodapes(documento);
+
         ParagraphAlignment alinhamentoDaNotaNoTexto = buscarAlinhamentoDoTextoDaNotaDeRodape(documento.getFooterList().get(0));
         String textoAdicionadoNoDocumento = buscarTextoDaNotaAdicionandaNoRodape(documento.getFooterList().get(0));
-
         assertEquals(notaParaAdicionar, textoAdicionadoNoDocumento);
         assertEquals(alinhamentoDaNotaDeRodape.get().getAlinhamento(), alinhamentoDaNotaNoTexto);
     }
