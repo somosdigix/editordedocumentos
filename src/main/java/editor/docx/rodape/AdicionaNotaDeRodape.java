@@ -46,6 +46,15 @@ public class AdicionaNotaDeRodape {
             XWPFRun run = paragraph.createRun();
             run.addBreak();
             run.setText(this.notaParaAdicionar);
+            configurarTamanhoDaNota(run);
+        }
+    }
+
+    private void configurarTamanhoDaNota(XWPFRun run) {
+        if (this.alinhamentoDaNotaDeRodape.isPresent()) {
+            run.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
+        } else {
+            run.setFontSize(10);
         }
     }
 

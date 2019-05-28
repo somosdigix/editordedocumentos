@@ -4,6 +4,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class EditorDeParagrafoTest {
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
 
+    @Ignore
     @Test
     public void deveEditarUmParagrafoNoTextoUsandoTagComDelimitadores() throws Exception {
         String conteudoDoTextoEsperado = "Marquinhos DJ";
