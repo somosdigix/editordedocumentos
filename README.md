@@ -26,7 +26,7 @@ versões:
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
-  <version>2.2.1</version>
+  <version>2.2.2</version>
 </dependency>
  ```
  
@@ -56,11 +56,6 @@ versões:
   AlinhamentoDaNotaDeRodape alinhamento = AlinhamentoDaNotaDeRodape.DIREITA;
   ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape,alinhamento).editar(arquivoQueSeraEditado, dados);
   ```
-
-- v2.2.1
-Para facilitar a leitura e manutenção dos templates agora temos dois modos de atribuição das tags no template docx, por meio de expressão e por atribuição direta: 
-   expressão: ${atributoQueSeraSubstituido}
-   atribuição direta: atributoQueSeraSubstituido
 
 https://search.maven.org/artifact/br.com.digix/editordedocumento
 
