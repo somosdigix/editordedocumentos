@@ -4,6 +4,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -19,22 +20,6 @@ public class EditorDeParagrafoTest {
                 conteudoDoTextoEsperado);
         XWPFDocument documento = new XWPFDocument();
         XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, atributoQueSeraAlteradoNoDocumento);
-
-        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
-        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
-
-        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
-    }
-
-    @Test
-    public void deveEditarUmParagrafoNoTextoUsandoTagComDelimitadores() throws Exception {
-        String conteudoDoTextoEsperado = "Marquinhos DJ";
-        String atributoQueSeraSubstituido = "nomeDoDJDaFesta";
-        String tagQueSeraAlteradaNoDocumento = "${" + atributoQueSeraSubstituido + "}";
-        Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraSubstituido,
-                conteudoDoTextoEsperado);
-        XWPFDocument documento = new XWPFDocument();
-        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, tagQueSeraAlteradaNoDocumento);
 
         EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
         String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);

@@ -8,11 +8,12 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
 public class AdicionaNotaDeRodape {
+
+    private static final Integer TAMANHO_PADRAO = 10;
 
     private String notaParaAdicionar;
     private Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape;
@@ -41,17 +42,26 @@ public class AdicionaNotaDeRodape {
 
     private void adicionarNotaRodape(XWPFFooter rodape) {
         if (rodape.getListParagraph() != null) {
-            XWPFParagraph paragraph = rodape.createParagraph();
-            configurarAlinhamentoDaNota(paragraph);
-            XWPFRun run = paragraph.createRun();
-            run.addBreak();
-            run.setText(this.notaParaAdicionar);
+            XWPFParagraph paragrafo = rodape.createParagraph();
+            configurarAlinhamentoDaNota(paragrafo);
+            XWPFRun linha = paragrafo.createRun();
+            linha.addBreak();
+            linha.setText(this.notaParaAdicionar);
+            configurarTamanhoDaFonteDaNota(linha);
         }
     }
 
-    private void configurarAlinhamentoDaNota(XWPFParagraph paragraph) {
+    private void configurarTamanhoDaFonteDaNota(XWPFRun linha) {
         if (this.alinhamentoDaNotaDeRodape.isPresent()) {
-            paragraph.setAlignment(this.alinhamentoDaNotaDeRodape.get().getAlinhamento());
+            linha.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
+        } else {
+            linha.setFontSize(TAMANHO_PADRAO);
+        }
+    }
+
+    private void configurarAlinhamentoDaNota(XWPFParagraph paragrafo) {
+        if (this.alinhamentoDaNotaDeRodape.isPresent()) {
+            paragrafo.setAlignment(this.alinhamentoDaNotaDeRodape.get().getAlinhamento());
         }
     }
 }
