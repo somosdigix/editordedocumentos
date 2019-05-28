@@ -42,26 +42,26 @@ public class AdicionaNotaDeRodape {
 
     private void adicionarNotaRodape(XWPFFooter rodape) {
         if (rodape.getListParagraph() != null) {
-            XWPFParagraph paragraph = rodape.createParagraph();
-            configurarAlinhamentoDaNota(paragraph);
-            XWPFRun run = paragraph.createRun();
-            run.addBreak();
-            run.setText(this.notaParaAdicionar);
-            configurarTamanhoDaFonteDaNota(run);
+            XWPFParagraph paragrafo = rodape.createParagraph();
+            configurarAlinhamentoDaNota(paragrafo);
+            XWPFRun linha = paragrafo.createRun();
+            linha.addBreak();
+            linha.setText(this.notaParaAdicionar);
+            configurarTamanhoDaFonteDaNota(linha);
         }
     }
 
-    private void configurarTamanhoDaFonteDaNota(XWPFRun run) {
+    private void configurarTamanhoDaFonteDaNota(XWPFRun linha) {
         if (this.alinhamentoDaNotaDeRodape.isPresent()) {
-            run.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
+            linha.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
         } else {
-            run.setFontSize(TAMANHO_PADRAO);
+            linha.setFontSize(TAMANHO_PADRAO);
         }
     }
 
-    private void configurarAlinhamentoDaNota(XWPFParagraph paragraph) {
+    private void configurarAlinhamentoDaNota(XWPFParagraph paragrafo) {
         if (this.alinhamentoDaNotaDeRodape.isPresent()) {
-            paragraph.setAlignment(this.alinhamentoDaNotaDeRodape.get().getAlinhamento());
+            paragrafo.setAlignment(this.alinhamentoDaNotaDeRodape.get().getAlinhamento());
         }
     }
 }
