@@ -142,18 +142,18 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
         return editarDocumento(documentoDocx);
     }
 
-    private XWPFDocument editarDocumento(InputStream arquivoQueSeraEditado) throws InvalidFormatException, IOException {
+    private XWPFDocument editarDocumento(InputStream arquivoQueSeraEditado) throws IOException {
         XWPFDocument documentoDocx = new XWPFDocument(arquivoQueSeraEditado);
         return editarDocumento(documentoDocx);
     }
 
-    private XWPFDocument editarDocumento(XWPFDocument documentoDocx) throws InvalidFormatException, IOException {
+    private XWPFDocument editarDocumento(XWPFDocument documentoDocx) throws IOException {
         editorDeCabecalho.editarConteudoDosCabecalhosDoDocumento(documentoDocx.getHeaderList());
         editorDeParagrafo.editarParagrafosDoDocumento(documentoDocx.getParagraphs());
         editorDeTabela.editarConteudoDasTabelas(documentoDocx.getTables());
         adicionarConteudoNasTabelasDoDocumentoDeTexto(documentoDocx);
         editorDeRodape.editarConteudoDosRodapesDoDocumento(documentoDocx.getFooterList());
-        adicionarNotaDeRodape(documentoDocx.getFooterList());
+        adicionarNotaDeRodape(documentoDocx);
         return documentoDocx;
     }
 
@@ -163,9 +163,9 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
         }
     }
 
-    private void adicionarNotaDeRodape(List<XWPFFooter> rodapesDoDocumento) {
+    private void adicionarNotaDeRodape(XWPFDocument documentoDocx) throws IOException {
         if (Objects.nonNull(adicionaNotaDeRodape)) {
-            adicionaNotaDeRodape.adicionarNotaNosRodapes(rodapesDoDocumento);
+            adicionaNotaDeRodape.adicionarNotaNosRodapes(documentoDocx);
         }
     }
 }

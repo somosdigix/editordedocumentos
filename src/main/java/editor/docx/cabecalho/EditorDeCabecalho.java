@@ -32,5 +32,4 @@ public class EditorDeCabecalho {
 			cabecalhoDoDocumento.getListParagraph().forEach(paragrafoDoCabecalho -> editorDeParagrafo.editarParagrafosDoDocumento(paragrafoDoCabecalho));
 		}
 	}
-
 }
