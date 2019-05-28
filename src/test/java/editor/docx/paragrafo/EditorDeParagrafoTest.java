@@ -27,23 +27,6 @@ public class EditorDeParagrafoTest {
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
 
-    @Ignore
-    @Test
-    public void deveEditarUmParagrafoNoTextoUsandoTagComDelimitadores() throws Exception {
-        String conteudoDoTextoEsperado = "Marquinhos DJ";
-        String atributoQueSeraSubstituido = "nomeDoDJDaFesta";
-        String tagQueSeraAlteradaNoDocumento = "${" + atributoQueSeraSubstituido + "}";
-        Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraSubstituido,
-                conteudoDoTextoEsperado);
-        XWPFDocument documento = new XWPFDocument();
-        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, tagQueSeraAlteradaNoDocumento);
-
-        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
-        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
-
-        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
-    }
-
     private Map<String, Object> montarMapaDeAtributos(String tagNoDocumento, String conteudoDoTestoEsperado) {
         Map<String, Object> mapaDeAtributos = new HashMap<>();
         mapaDeAtributos.put(tagNoDocumento, conteudoDoTestoEsperado);
