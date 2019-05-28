@@ -8,7 +8,7 @@ Framework desenvolvido para gerar relatorios no formato docx com mais facilidade
 para utilizar, adicione a dependencia abaixo ao seu pom
 
 versões:
-- v1.1.8 (14/11/2019)
+- v1.1.8 (14/11/2018)
 ``` sh
 <dependency>
    <groupId>br.com.digix</groupId>
