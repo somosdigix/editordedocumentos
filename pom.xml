@@ -5,7 +5,7 @@
 
     <groupId>br.com.digix</groupId>
     <artifactId>editordedocumento</artifactId>
-    <version>2.2.3</version>
+    <version>2.2.4</version>
     <name>Editor De Documento</name>
     <description>Framework desenvolvido para gerar relatorios no formato docx com mais facilidade</description>
     <url>https://github.com/somosdigix/editordedocumentos</url>
