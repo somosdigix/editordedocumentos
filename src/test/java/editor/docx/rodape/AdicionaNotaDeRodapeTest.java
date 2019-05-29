@@ -42,17 +42,17 @@ public class AdicionaNotaDeRodapeTest {
     }
 
     @Test
-    public void deveAdicionarUmaNotaDeRodaPeNoDocumentoConfigurandoOAlinhamento() throws Exception {
+    public void deveAdicionarUmaNotaDeRodaPeNoDocumentoConfigurandoAFormatacao() throws Exception {
         String notaParaAdicionar = "Gerado pelo editor de documentos.";
-        Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape = Optional.of(AlinhamentoDaNotaDeRodape.DIREITA);
-        AdicionaNotaDeRodape adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaParaAdicionar, alinhamentoDaNotaDeRodape);
+        Optional<FormatacaoDaNotaDeRodape> formatacaoDaNotaDeRodape = Optional.of(new FormatacaoDaNotaDeRodape());
+        AdicionaNotaDeRodape adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaParaAdicionar, formatacaoDaNotaDeRodape);
 
         adicionaNotaDeRodape.adicionarNotaNosRodapes(documento);
 
         ParagraphAlignment alinhamentoDaNotaNoTexto = buscarAlinhamentoDoTextoDaNotaDeRodape(documento.getFooterList().get(0));
         String textoAdicionadoNoDocumento = buscarTextoDaNotaAdicionandaNoRodape(documento.getFooterList().get(0));
         assertEquals(notaParaAdicionar, textoAdicionadoNoDocumento);
-        assertEquals(alinhamentoDaNotaDeRodape.get().getAlinhamento(), alinhamentoDaNotaNoTexto);
+        assertEquals(formatacaoDaNotaDeRodape.get().getAlinhamento(), alinhamentoDaNotaNoTexto);
     }
 
     private String buscarTextoDaNotaAdicionandaNoRodape(XWPFFooter rodape) {

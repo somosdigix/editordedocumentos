@@ -3,6 +3,7 @@ package editor;
 import editor.docx.EditorDeArquivoDeTextoDocx;
 import editor.docx.ErroAoEditarArquivoDeTexto;
 import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
+import editor.docx.rodape.FormatacaoDaNotaDeRodape;
 import editor.docx.tabela.FormatacaoDaTabela;
 
 import java.io.File;
@@ -59,8 +60,8 @@ public abstract class EditorDeArquivoDeTexto {
         return this;
     }
 
-    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, AlinhamentoDaNotaDeRodape... alinhamentoDaNotaDeRodape) {
-        editorDeArquivoDeTexto.comNotaDeRodape(notaDeRodape, alinhamentoDaNotaDeRodape);
+    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, FormatacaoDaNotaDeRodape... formatacaoDasNotasDeRodape) {
+        editorDeArquivoDeTexto.comNotaDeRodape(notaDeRodape, formatacaoDasNotasDeRodape);
         return this;
     }
 }

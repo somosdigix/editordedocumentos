@@ -13,18 +13,16 @@ import java.util.Optional;
 
 public class AdicionaNotaDeRodape {
 
-    private static final Integer TAMANHO_PADRAO = 10;
-
     private String notaParaAdicionar;
-    private Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape;
+    private Optional<FormatacaoDaNotaDeRodape> formatacaoDaNotaDeRodape;
 
-    private AdicionaNotaDeRodape(String notaParaAdicionar, Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape) {
+    private AdicionaNotaDeRodape(String notaParaAdicionar, Optional<FormatacaoDaNotaDeRodape> formatacaoDaNotaDeRodape) {
         this.notaParaAdicionar = notaParaAdicionar;
-        this.alinhamentoDaNotaDeRodape = alinhamentoDaNotaDeRodape;
+        this.formatacaoDaNotaDeRodape = formatacaoDaNotaDeRodape;
     }
 
-    public static AdicionaNotaDeRodape comNotaDeRodape(String notaParaAdicionar, Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNotaDeRodape) {
-        return new AdicionaNotaDeRodape(notaParaAdicionar, alinhamentoDaNotaDeRodape);
+    public static AdicionaNotaDeRodape comNotaDeRodape(String notaParaAdicionar, Optional<FormatacaoDaNotaDeRodape> formatacaoDaNotaDeRodape) {
+        return new AdicionaNotaDeRodape(notaParaAdicionar, formatacaoDaNotaDeRodape);
     }
 
     public void adicionarNotaNosRodapes(XWPFDocument documentoDocx) throws IOException {
@@ -48,20 +46,31 @@ public class AdicionaNotaDeRodape {
             linha.addBreak();
             linha.setText(this.notaParaAdicionar);
             configurarTamanhoDaFonteDaNota(linha);
-        }
-    }
-
-    private void configurarTamanhoDaFonteDaNota(XWPFRun linha) {
-        if (this.alinhamentoDaNotaDeRodape.isPresent()) {
-            linha.setFontSize(this.alinhamentoDaNotaDeRodape.get().getTamanhoDaFonte());
-        } else {
-            linha.setFontSize(TAMANHO_PADRAO);
+            configurarFonteDaNota(linha);
         }
     }
 
     private void configurarAlinhamentoDaNota(XWPFParagraph paragrafo) {
-        if (this.alinhamentoDaNotaDeRodape.isPresent()) {
-            paragrafo.setAlignment(this.alinhamentoDaNotaDeRodape.get().getAlinhamento());
+        if (this.formatacaoDaNotaDeRodape.isPresent()) {
+            paragrafo.setAlignment(this.formatacaoDaNotaDeRodape.get().getAlinhamento());
+        }else{
+            paragrafo.setAlignment(FormatacaoDaNotaDeRodape.getAlinhamentoPadrao());
+        }
+    }
+
+    private void configurarTamanhoDaFonteDaNota(XWPFRun linha) {
+        if (this.formatacaoDaNotaDeRodape.isPresent()) {
+            linha.setFontSize(this.formatacaoDaNotaDeRodape.get().getTamanhoDaFonte());
+        } else {
+            linha.setFontSize(FormatacaoDaNotaDeRodape.getTamanhoDaFontePadrao());
+        }
+    }
+
+    private void configurarFonteDaNota(XWPFRun linha) {
+        if (this.formatacaoDaNotaDeRodape.isPresent()) {
+            linha.setFontFamily(this.formatacaoDaNotaDeRodape.get().getFonte());
+        } else {
+            linha.setFontFamily(FormatacaoDaNotaDeRodape.getFontePadrao());
         }
     }
 }

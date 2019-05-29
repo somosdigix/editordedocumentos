@@ -8,13 +8,9 @@ public class FormatacaoDaTabela {
 	private String fonte;
 	private Integer tamanhoDaFonte;
 
-	public FormatacaoDaTabela() {
+	private FormatacaoDaTabela() {
 		this.tamanhoDaFonte = TAMANHO_DA_FONTE_PADRAO;
 		this.fonte = FONTE_PADRAO;
-	}
-
-	public FormatacaoDaTabela criar() {
-		return new FormatacaoDaTabela();
 	}
 	
 	public FormatacaoDaTabela comFonte(String fonte) {
