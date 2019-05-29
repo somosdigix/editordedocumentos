@@ -25,7 +25,7 @@ versões:
 </dependency>
  ```
  ultima versão: 
- - v2.2.4(29/05/2019)
+ - v2.2.4 (29/05/2019)
   ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
