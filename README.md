@@ -25,12 +25,12 @@ versões:
 </dependency>
  ```
  ultima versão: 
- - v2.2.3(29/05/2019)
+ - v2.2.4(29/05/2019)
   ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
-  <version>2.2.3</version>
+  <version>2.2.4</version>
 </dependency>
  ```
  
@@ -55,7 +55,7 @@ versões:
   String notaDeRodape = "Gerado pelo editor de documento.";
   ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, dados);
    ```
- - V2.2.3  
+ - V2.2.4  
   Agora também podemos passar a formatação da nota de rodapé:
   ``` sh
   FormatacaoDaNotaDeRodape formatacaoDaNotaDeRodape = new FormatacaoDaNotaDeRodape().comTamanhoDaFonte(8).comFonte("Arial").comAlinhamento(AlinhamentoDaNotaDeRodape.DIREITA);
