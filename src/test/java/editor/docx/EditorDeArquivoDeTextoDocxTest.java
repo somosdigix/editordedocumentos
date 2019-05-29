@@ -3,6 +3,7 @@ package editor.docx;
 import builder.RelatorioDeTesteBuilder;
 import editor.EditorDeArquivoDeTexto;
 import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
+import editor.docx.rodape.FormatacaoDaNotaDeRodape;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -113,9 +114,9 @@ public class EditorDeArquivoDeTextoDocxTest {
         ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
         String notaDeRodape = "Gerado pelo editor de documento.";
-        AlinhamentoDaNotaDeRodape alinhamento = AlinhamentoDaNotaDeRodape.DIREITA;
+        FormatacaoDaNotaDeRodape formatacaoDaNotaDeRodape = new FormatacaoDaNotaDeRodape();
 
-        ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape, alinhamento).editar(arquivoQueSeraEditado, relatorioDeTeste);
+        ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape, formatacaoDaNotaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
         String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
         assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);

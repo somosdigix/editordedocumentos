@@ -25,12 +25,12 @@ versões:
 </dependency>
  ```
  ultima versão: 
- - v2.2.2(28/05/2018)
+ - v2.2.3(29/05/2019)
   ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
-  <version>2.2.2</version>
+  <version>2.2.3</version>
 </dependency>
  ```
  
@@ -55,11 +55,13 @@ versões:
   String notaDeRodape = "Gerado pelo editor de documento.";
   ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, dados);
    ```
-  tambem podemos passar o parameto de alinhamento da nota de rodapé:
+ - V2.2.3  
+  Agora também podemos passar a formatação da nota de rodapé:
   ``` sh
-  AlinhamentoDaNotaDeRodape alinhamento = AlinhamentoDaNotaDeRodape.DIREITA;
-  ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape,alinhamento).editar(arquivoQueSeraEditado, dados);
+  FormatacaoDaNotaDeRodape formatacaoDaNotaDeRodape = new FormatacaoDaNotaDeRodape().comTamanhoDaFonte(8).comFonte("Arial").comAlinhamento(AlinhamentoDaNotaDeRodape.DIREITA);
+  ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape,formatacaoDaNotaDeRodape).editar(arquivoQueSeraEditado, dados);
   ```
 
+aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
 https://search.maven.org/artifact/br.com.digix/editordedocumento
 

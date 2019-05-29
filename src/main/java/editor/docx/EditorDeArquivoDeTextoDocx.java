@@ -6,6 +6,7 @@ import editor.docx.paragrafo.EditorDeParagrafo;
 import editor.docx.rodape.AdicionaNotaDeRodape;
 import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import editor.docx.rodape.EditorDeRodape;
+import editor.docx.rodape.FormatacaoDaNotaDeRodape;
 import editor.docx.tabela.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -44,10 +45,10 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
         return this;
     }
 
-    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, AlinhamentoDaNotaDeRodape... alinhamentoDaNotaDeRodape) {
+    public EditorDeArquivoDeTexto comNotaDeRodape(String notaDeRodape, FormatacaoDaNotaDeRodape... formatacaoDaNotaDeRodape) {
         if (Objects.nonNull(notaDeRodape)) {
-            Optional<AlinhamentoDaNotaDeRodape> alinhamentoDaNota = alinhamentoDaNotaDeRodape.length > 0 ? Optional.of(alinhamentoDaNotaDeRodape[0]) : Optional.empty();
-            this.adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaDeRodape, alinhamentoDaNota);
+            Optional<FormatacaoDaNotaDeRodape> formatacaoDaNota = formatacaoDaNotaDeRodape.length > 0 ? Optional.of(formatacaoDaNotaDeRodape[0]) : Optional.empty();
+            this.adicionaNotaDeRodape = AdicionaNotaDeRodape.comNotaDeRodape(notaDeRodape, formatacaoDaNota);
         }
         return this;
     }
