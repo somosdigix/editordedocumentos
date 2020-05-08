@@ -1,6 +1,7 @@
 package editor.docx.tabela;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,17 +19,21 @@ public class AdicionaLinhaNaTabelaDoDocumentoDeTexto {
     private final List<Tabela> tabelasParaDocumentoDeTextos;
     private final List<FormatacaoDaTabela> formatacoesDasTabelas;
 
-    private AdicionaLinhaNaTabelaDoDocumentoDeTexto(List<Tabela> tabelasParaDocumentoDeTextos, FormatacaoDaTabela... formatacaoDasTabelas) {
+    private AdicionaLinhaNaTabelaDoDocumentoDeTexto(List<Tabela> tabelasParaDocumentoDeTextos, List<FormatacaoDaTabela> formatacaoDasTabelas) {
         this.tabelasParaDocumentoDeTextos = tabelasParaDocumentoDeTextos;
-        this.formatacoesDasTabelas = Arrays.asList(formatacaoDasTabelas);
+        this.formatacoesDasTabelas = formatacaoDasTabelas;
     }
 
     public static AdicionaLinhaNaTabelaDoDocumentoDeTexto comTabelas(List<Tabela> tabelasParaDocumentoDeTextos, FormatacaoDaTabela... formatacaoDaTabela) {
+        return new AdicionaLinhaNaTabelaDoDocumentoDeTexto(tabelasParaDocumentoDeTextos, Arrays.asList(formatacaoDaTabela));
+    }
+
+    public static AdicionaLinhaNaTabelaDoDocumentoDeTexto comTabelas(List<Tabela> tabelasParaDocumentoDeTextos, List<FormatacaoDaTabela> formatacaoDaTabela) {
         return new AdicionaLinhaNaTabelaDoDocumentoDeTexto(tabelasParaDocumentoDeTextos, formatacaoDaTabela);
     }
 
     public static AdicionaLinhaNaTabelaDoDocumentoDeTexto comTabelas(Tabela tabelasParaDocumentoDeTextos, FormatacaoDaTabela... formatacaoDaTabela) {
-        return new AdicionaLinhaNaTabelaDoDocumentoDeTexto(Arrays.asList(tabelasParaDocumentoDeTextos), formatacaoDaTabela);
+        return new AdicionaLinhaNaTabelaDoDocumentoDeTexto(Collections.singletonList(tabelasParaDocumentoDeTextos), Arrays.asList(formatacaoDaTabela));
     }
 
     public AdicionaLinhaNaTabelaDoDocumentoDeTexto adicionarConteudoNasTabelasDoDocumentoDeTexto(List<XWPFTable> xwpfTables) {

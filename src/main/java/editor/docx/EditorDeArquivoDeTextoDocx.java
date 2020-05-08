@@ -4,19 +4,21 @@ import editor.EditorDeArquivoDeTexto;
 import editor.docx.cabecalho.EditorDeCabecalho;
 import editor.docx.paragrafo.EditorDeParagrafo;
 import editor.docx.rodape.AdicionaNotaDeRodape;
-import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import editor.docx.rodape.EditorDeRodape;
 import editor.docx.rodape.FormatacaoDaNotaDeRodape;
 import editor.docx.tabela.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import utils.ReflectionUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
 
@@ -37,10 +39,27 @@ public class EditorDeArquivoDeTextoDocx extends EditorDeArquivoDeTexto {
         return this;
     }
 
+    @Deprecated
     public EditorDeArquivoDeTexto docxComTabelas(List<Map<String, Object>> dadosParaMontarAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
         if (Objects.nonNull(dadosParaMontarAsTabelasDoDocumento)) {
             Tabela tabelasParaDocumentoDeTextos = MontadorDeTabelas.montarTabela(dadosParaMontarAsTabelasDoDocumento);
             this.adicionaLinhaNaTabelaDoDocumentoDeTexto = AdicionaLinhaNaTabelaDoDocumentoDeTexto.comTabelas(tabelasParaDocumentoDeTextos, formatacaoDaTabelas);
+        }
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto docxComTabela(List<Map<String, Object>> dadosParaMontarAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
+        if (Objects.nonNull(dadosParaMontarAsTabelasDoDocumento)) {
+            Tabela tabelasParaDocumentoDeTextos = MontadorDeTabelas.montarTabela(dadosParaMontarAsTabelasDoDocumento);
+            this.adicionaLinhaNaTabelaDoDocumentoDeTexto = AdicionaLinhaNaTabelaDoDocumentoDeTexto.comTabelas(tabelasParaDocumentoDeTextos, formatacaoDaTabelas);
+        }
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto docxComTabelas(List<List<Map<String, Object>>> dadosParaMontarAsTabelasDoDocumento, List<FormatacaoDaTabela> formatacaoDaTabelas) {
+        if (Objects.nonNull(dadosParaMontarAsTabelasDoDocumento)) {
+            List<Tabela> tabelasDoDocumento = dadosParaMontarAsTabelasDoDocumento.stream().map(MontadorDeTabelas::montarTabela).collect(Collectors.toList());
+            this.adicionaLinhaNaTabelaDoDocumentoDeTexto = AdicionaLinhaNaTabelaDoDocumentoDeTexto.comTabelas(tabelasDoDocumento, formatacaoDaTabelas);
         }
         return this;
     }
