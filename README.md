@@ -62,6 +62,13 @@ versões:
   ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape,formatacaoDaNotaDeRodape).editar(arquivoQueSeraEditado, dados);
   ```
 
+- V2.2.5  
+  Agora também é possível colocar mais de uma tabela em um mesmo documento passando uma lista de lista de atributos mapeados:
+  ``` sh
+  List<List<Map<String, Object>>> dadosDasTabelas = Arrays.asList(dadosDaPrimeiraTabela, dadosDaSegundaTabela);
+  EditorDeArquivoDeTexto.editarArquivoDocx().docxComTabelas(dadosDasTabelas, formatacao).editar(arquivoQueSeraEditado, mapaDeDadosDoDocumento);
+  ```
+
 aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
 https://search.maven.org/artifact/br.com.digix/editordedocumento
 

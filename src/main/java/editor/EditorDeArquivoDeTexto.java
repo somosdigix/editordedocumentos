@@ -2,7 +2,6 @@ package editor;
 
 import editor.docx.EditorDeArquivoDeTextoDocx;
 import editor.docx.ErroAoEditarArquivoDeTexto;
-import editor.docx.rodape.AlinhamentoDaNotaDeRodape;
 import editor.docx.rodape.FormatacaoDaNotaDeRodape;
 import editor.docx.tabela.FormatacaoDaTabela;
 
@@ -55,8 +54,19 @@ public abstract class EditorDeArquivoDeTexto {
         return this;
     }
 
+    @Deprecated
     public EditorDeArquivoDeTexto docxComTabelas(List<Map<String, Object>> listasDeObjetosParaAsTabelasDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
         editorDeArquivoDeTexto.docxComTabelas(listasDeObjetosParaAsTabelasDoDocumento, formatacaoDaTabelas);
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto docxComTabela(List<Map<String, Object>> listasDeObjetosParaATabelaDoDocumento, FormatacaoDaTabela... formatacaoDaTabelas) {
+        editorDeArquivoDeTexto.docxComTabela(listasDeObjetosParaATabelaDoDocumento, formatacaoDaTabelas);
+        return this;
+    }
+
+    public EditorDeArquivoDeTexto docxComTabelas(List<List<Map<String, Object>>> dadosParaMontarAsTabelasDoDocumento, List<FormatacaoDaTabela> formatacaoDaTabelas) {
+        editorDeArquivoDeTexto.docxComTabelas(dadosParaMontarAsTabelasDoDocumento, formatacaoDaTabelas);
         return this;
     }
 
