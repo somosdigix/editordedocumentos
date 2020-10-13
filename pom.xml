@@ -29,7 +29,7 @@
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
         <!-- Versão das dependencias -->
-        <junit>4.12</junit>
+        <junit>4.13.1</junit>
         <org.apache.poi>3.14</org.apache.poi>
         <com.itextpdf>5.5.9</com.itextpdf>
         <org.apache.poi.xwpf.converter.pdf>1.0.4</org.apache.poi.xwpf.converter.pdf>
