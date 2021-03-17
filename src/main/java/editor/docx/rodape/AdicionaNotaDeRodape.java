@@ -7,9 +7,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class AdicionaNotaDeRodape {
 
@@ -33,7 +31,8 @@ public class AdicionaNotaDeRodape {
     private List<XWPFFooter> obterRodapesDoDocumento(XWPFDocument documentoDocx) throws IOException {
         List<XWPFFooter> rodapesDoDocumento = documentoDocx.getFooterList();
         if (rodapesDoDocumento.isEmpty()) {
-            rodapesDoDocumento = Collections.singletonList(documentoDocx.createHeaderFooterPolicy().createFooter(XWPFHeaderFooterPolicy.DEFAULT));
+            XWPFFooter rodape = documentoDocx.createHeaderFooterPolicy().createFooter(XWPFHeaderFooterPolicy.DEFAULT);
+            rodapesDoDocumento = Arrays.asList(rodape);
         }
         return rodapesDoDocumento;
     }

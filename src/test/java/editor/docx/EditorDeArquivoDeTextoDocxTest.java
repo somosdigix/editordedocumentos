@@ -105,8 +105,8 @@ public class EditorDeArquivoDeTextoDocxTest {
 
         ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
-        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
-        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+        List<String> textosAdicionadosNasNotasDeRodape = obterTextoDasNotasDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertTrue(textosAdicionadosNasNotasDeRodape.contains(notaDeRodape));
     }
 
     @Test
@@ -120,8 +120,8 @@ public class EditorDeArquivoDeTextoDocxTest {
 
         ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape, formatacaoDaNotaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
-        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
-        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+        List<String> textosAdicionadosNasNotasDeRodape = obterTextoDasNotasDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertTrue(textosAdicionadosNasNotasDeRodape.contains(notaDeRodape));
     }
 
     @Test
@@ -130,12 +130,12 @@ public class EditorDeArquivoDeTextoDocxTest {
         byte[] bytesDoTemplate = Files.readAllBytes(path);
         ByteBuffer arquivoQueSeraEditado = ByteBuffer.wrap(bytesDoTemplate);
         RelatorioDeTesteBuilder relatorioDeTeste = new RelatorioDeTesteBuilder().criar();
-        String notaDeRodape = "Gerado pelo editor de documento.";
+        String notaDeRodape = "Gerado pelo editor de documento digix.";
 
         ByteBuffer byteBuffer = EditorDeArquivoDeTexto.editarArquivoDocx().comNotaDeRodape(notaDeRodape).editar(arquivoQueSeraEditado, relatorioDeTeste);
 
-        String textoAdicionadoNaNotaDeRodape = obterTextoDaNotaDeRodapeAdicionadoNoDocumento(byteBuffer);
-        assertEquals(textoAdicionadoNaNotaDeRodape, notaDeRodape);
+        List<String> textosAdicionadosNasNotasDeRodape = obterTextoDasNotasDeRodapeAdicionadoNoDocumento(byteBuffer);
+        assertTrue(textosAdicionadosNasNotasDeRodape.contains(notaDeRodape));
     }
 
     @Test
@@ -201,10 +201,13 @@ public class EditorDeArquivoDeTextoDocxTest {
         return dadosDaTabela;
     }
 
-    private String obterTextoDaNotaDeRodapeAdicionadoNoDocumento(ByteBuffer byteBuffer) throws IOException {
+    private List<String> obterTextoDasNotasDeRodapeAdicionadoNoDocumento(ByteBuffer byteBuffer) throws IOException {
         XWPFDocument xwpfDocument = obterDocument(byteBuffer);
         List<XWPFParagraph> paragrafosDoRodape = xwpfDocument.getFooterList().get(0).getListParagraph();
-        return paragrafosDoRodape.get(1).getText().replace("\n", "");
+        return paragrafosDoRodape
+                .stream()
+                .map(paragrafo -> paragrafo.getText().replace("\n", ""))
+                .collect(Collectors.toList());
     }
 
     private RelatorioDeTesteBuilder criarRelatorioDeTesteBuilderComTitulo(String tituloDoRelatorio) {
