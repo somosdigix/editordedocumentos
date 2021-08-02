@@ -21,7 +21,7 @@ public class EditorDeParagrafoTest {
         XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumentoComApenasUmTrecho(documento, atributoQueSeraAlteradoNoDocumento);
 
         EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
-        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
+        String textoAdicionadoNoDocumento = buscarTextoNoArquivo(documento, conteudoDoTextoEsperado);
 
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
@@ -38,7 +38,7 @@ public class EditorDeParagrafoTest {
 
         EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
 
-        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
+        String textoAdicionadoNoDocumento = buscarTextoNoArquivo(documento, conteudoDoTextoEsperado);
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
 
@@ -54,7 +54,22 @@ public class EditorDeParagrafoTest {
 
         EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
 
-        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
+        String textoAdicionadoNoDocumento = buscarTextoNoArquivo(documento, conteudoDoTextoEsperado);
+        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
+    }
+
+    @Test
+    public void deveEditarUmParagrafoQuandoOTrechoDoParagrafoForVazio() throws Exception {
+        String conteudoDoTextoEsperado = "";
+        XWPFDocument documento = new XWPFDocument();
+        XWPFParagraph paragrafoDoDocumento = documento.createParagraph();
+        paragrafoDoDocumento.createRun();
+        Map<String, Object> mapaDeAtributos = new HashMap<>();
+        mapaDeAtributos.put("nomeDaCidade", "Campo Grande");
+
+        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
+
+        String textoAdicionadoNoDocumento = buscarTextoNoArquivo(documento, conteudoDoTextoEsperado);
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
 
@@ -71,7 +86,7 @@ public class EditorDeParagrafoTest {
         return paragrafoDoDocumento;
     }
 
-    private String buscarPalavraNoArquivo(XWPFDocument documento, String conteudoParaBuscar) throws Exception {
+    private String buscarTextoNoArquivo(XWPFDocument documento, String conteudoParaBuscar) throws Exception {
         return documento.getParagraphs().stream()
                 .filter(paragrafo -> verificarConteudoDoParagrafo(paragrafo, conteudoParaBuscar)).findFirst().get()
                 .getText();
