@@ -4,7 +4,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -19,11 +18,43 @@ public class EditorDeParagrafoTest {
         Map<String, Object> mapaDeAtributos = montarMapaDeAtributos(atributoQueSeraAlteradoNoDocumento,
                 conteudoDoTextoEsperado);
         XWPFDocument documento = new XWPFDocument();
-        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumento(documento, atributoQueSeraAlteradoNoDocumento);
+        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumentoComApenasUmTrecho(documento, atributoQueSeraAlteradoNoDocumento);
 
         EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
         String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
 
+        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
+    }
+
+    @Test
+    public void deveEditarUmParagrafoQuandoOTrechoDoParagrafoTiverMaisDeUmaPalavra() throws Exception {
+        String conteudoDoTextoQueDeveSerSubstituido = "Carlos Silva";
+        String conteudoDoTextoEsperado = "e assina também Carlos Silva doravante citado como Contratado";
+        String textoOriginalDoDocumentoComAsTags = "e assina também nomeDoFuncionario doravante citado como Contratado";
+        Map<String, Object> mapaDeAtributos = new HashMap<>();
+        mapaDeAtributos.put("nomeDoFuncionario", conteudoDoTextoQueDeveSerSubstituido);
+        XWPFDocument documento = new XWPFDocument();
+        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumentoComApenasUmTrecho(documento, textoOriginalDoDocumentoComAsTags);
+
+        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
+
+        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
+        Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
+    }
+
+    @Test
+    public void deveEditarUmParagrafoQuandoOTrechoDoParagrafoTiverChavesParaSubstituirSemEspaçoEntreElas() throws Exception {
+        String conteudoDoTextoEsperado = "na cidade de Campo Grande/MS";
+        String textoOriginalDoDocumentoComAsTags = "na cidade de nomeDaCidade/siglaDoUF";
+        Map<String, Object> mapaDeAtributos = new HashMap<>();
+        mapaDeAtributos.put("nomeDaCidade", "Campo Grande");
+        mapaDeAtributos.put("siglaDoUF", "MS");
+        XWPFDocument documento = new XWPFDocument();
+        XWPFParagraph paragrafoDoDocumento = criarParagrafoNoDocumentoComApenasUmTrecho(documento, textoOriginalDoDocumentoComAsTags);
+
+        EditorDeParagrafo.comMapaDeAtributos(mapaDeAtributos).editarParagrafosDoDocumento(paragrafoDoDocumento);
+
+        String textoAdicionadoNoDocumento = buscarPalavraNoArquivo(documento, conteudoDoTextoEsperado);
         Assert.assertEquals(conteudoDoTextoEsperado, textoAdicionadoNoDocumento);
     }
 
@@ -33,10 +64,10 @@ public class EditorDeParagrafoTest {
         return mapaDeAtributos;
     }
 
-    private XWPFParagraph criarParagrafoNoDocumento(XWPFDocument documento, String atributoQueSeraAlteradoNoDocumento) {
+    private XWPFParagraph criarParagrafoNoDocumentoComApenasUmTrecho(XWPFDocument documento, String conteudoDoTrechoDoParagrafo) {
         XWPFParagraph paragrafoDoDocumento = documento.createParagraph();
         XWPFRun linhaDoDocumento = paragrafoDoDocumento.createRun();
-        linhaDoDocumento.setText(atributoQueSeraAlteradoNoDocumento);
+        linhaDoDocumento.setText(conteudoDoTrechoDoParagrafo);
         return paragrafoDoDocumento;
     }
 
