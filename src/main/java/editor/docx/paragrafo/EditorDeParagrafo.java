@@ -66,8 +66,8 @@ public class EditorDeParagrafo {
                 .apply(textoDaRun);
     }
 
-    private boolean verificarSeChaveEstaContidaNoTexto(String chaveParaSubstituicao, String textoDaRun) {
-        return textoDaRun.contains(chaveParaSubstituicao);
+    private boolean verificarSeChaveEstaContidaNoTexto(String chaveParaSubstituicao, String conteudoDoTrechoDeParagrafo) {
+        return Objects.nonNull(conteudoDoTrechoDeParagrafo) && conteudoDoTrechoDeParagrafo.contains(chaveParaSubstituicao);
     }
 
     private String obterValorParaSubstituicao(String atributoDoDocumento) {
