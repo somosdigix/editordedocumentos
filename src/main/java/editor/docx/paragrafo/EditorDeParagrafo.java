@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EditorDeParagrafo {
 
@@ -40,18 +42,32 @@ public class EditorDeParagrafo {
 
     private void editarUmParagrafo(XWPFParagraph paragrafoDocumento) {
         if (Objects.nonNull(paragrafoDocumento.getRuns())) {
-            paragrafoDocumento.getRuns().forEach(linhaDoParagrado -> editarTagDoDocumento(linhaDoParagrado));
+            paragrafoDocumento.getRuns().forEach(this::editarTagDoDocumento);
         }
     }
 
-    private void editarTagDoDocumento(XWPFRun linhaDoDocumento) {
-        String chaveParaSubstituicao = linhaDoDocumento.getText(INICIO_DA_TAG_NO_TEXTO);
-        if (Objects.nonNull(chaveParaSubstituicao) && mapaDeAtributos.containsKey(chaveParaSubstituicao)) {
-            String valorParaSubstituir = obterValorParaSubstituicao(chaveParaSubstituicao);
-            linhaDoDocumento.setText(VAZIO, INICIO_DA_TAG_NO_TEXTO);
-            String[] linhas = valorParaSubstituir.split(PULA_LINHA);
-            Arrays.stream(linhas).forEach(linha -> formatarLinha(linhaDoDocumento, valorParaSubstituir, linha));
+    private void editarTagDoDocumento(XWPFRun trechoDeParagrafo) {
+        String conteudoDoTrechoDeParagrafo = trechoDeParagrafo.getText(INICIO_DA_TAG_NO_TEXTO);
+        List<String> chavesParaSubstituir = mapaDeAtributos.keySet().stream()
+                .filter(chaveParaSubstituicao -> verificarSeChaveEstaContidaNoTexto(chaveParaSubstituicao, conteudoDoTrechoDeParagrafo)).collect(Collectors.toList());
+        if (Objects.nonNull(conteudoDoTrechoDeParagrafo) && !chavesParaSubstituir.isEmpty()) {
+            String conteudoDoTrechoDeParagrafoComTagsSubstituidas = obterTrechoDeParagrafoComTagsSubstituidas(conteudoDoTrechoDeParagrafo);
+            trechoDeParagrafo.setText(VAZIO, INICIO_DA_TAG_NO_TEXTO);
+            String[] linhas = conteudoDoTrechoDeParagrafoComTagsSubstituidas.split(PULA_LINHA);
+            Arrays.stream(linhas).forEach(linha -> formatarLinha(trechoDeParagrafo, conteudoDoTrechoDeParagrafoComTagsSubstituidas, linha));
         }
+    }
+
+    private String obterTrechoDeParagrafoComTagsSubstituidas(String textoDaRun) {
+        return mapaDeAtributos.entrySet().stream().map(chaveEValor ->
+                        (Function<String, String>) textoParaSubstituicao ->
+                                textoParaSubstituicao.replace(chaveEValor.getKey(), obterValorParaSubstituicao(chaveEValor.getKey())))
+                .reduce(Function.identity(), Function::andThen)
+                .apply(textoDaRun);
+    }
+
+    private boolean verificarSeChaveEstaContidaNoTexto(String chaveParaSubstituicao, String conteudoDoTrechoDeParagrafo) {
+        return Objects.nonNull(conteudoDoTrechoDeParagrafo) && conteudoDoTrechoDeParagrafo.contains(chaveParaSubstituicao);
     }
 
     private String obterValorParaSubstituicao(String atributoDoDocumento) {
