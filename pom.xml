@@ -30,7 +30,7 @@
 
         <!-- Versão das dependencias -->
         <junit>4.13.1</junit>
-        <org.apache.poi>3.14</org.apache.poi>
+        <org.apache.poi>3.17</org.apache.poi>
         <com.itextpdf>5.5.9</com.itextpdf>
         <org.apache.poi.xwpf.converter.pdf>1.0.4</org.apache.poi.xwpf.converter.pdf>
         <fr.opensagres.xdocreport>1.0.5</fr.opensagres.xdocreport>
