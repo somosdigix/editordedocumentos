@@ -24,13 +24,21 @@ versões:
   <version>2.0.0</version>
 </dependency>
  ```
- ultima versão: 
  - v2.2.4 (29/05/2019)
   ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
   <version>2.2.4</version>
+</dependency>
+ ```
+ ultima versão: 
+ - v2.2.6 (02/08/2021)
+  ``` sh
+<dependency>
+  <groupId>br.com.digix</groupId>
+  <artifactId>editordedocumento</artifactId>
+  <version>2.2.6</version>
 </dependency>
  ```
  
@@ -68,6 +76,9 @@ versões:
   List<List<Map<String, Object>>> dadosDasTabelas = Arrays.asList(dadosDaPrimeiraTabela, dadosDaSegundaTabela);
   EditorDeArquivoDeTexto.editarArquivoDocx().docxComTabelas(dadosDasTabelas, formatacao).editar(arquivoQueSeraEditado, mapaDeDadosDoDocumento);
   ```
+ 
+ - V2.2.6
+  Correções de bugs menores na substituição de tags.
 
 aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
 https://search.maven.org/artifact/br.com.digix/editordedocumento
