@@ -225,6 +225,11 @@
             <version>${com.itextpdf}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.28</version>
+        </dependency>
+        <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
             <version>${org.apache.poi.xwpf.converter.pdf}</version>
