@@ -1,21 +1,18 @@
 package utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.junit.After;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import com.itextpdf.text.List;
-import com.itextpdf.text.pdf.PdfReader;
-import org.junit.After;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PdfUtilsTest {
 
@@ -61,14 +58,14 @@ public class PdfUtilsTest {
     }
 
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(File... documentos) throws IOException {
-        Integer quantidadeDePaginasDoArquivoDeSaida = 0;
-        PdfReader leitorDePaginas = null;
-        for (File documento : Arrays.asList(documentos)) {
+        int quantidadeDePaginasDoArquivoDeSaida = 0;
+        PDDocument leitorDePaginas;
+        for (File documento : documentos) {
             byte[] bytesDoDocumento = Files.readAllBytes(documento.toPath());
-            leitorDePaginas = new PdfReader(bytesDoDocumento);
+            leitorDePaginas = PDDocument.load(bytesDoDocumento);
             quantidadeDePaginasDoArquivoDeSaida += leitorDePaginas.getNumberOfPages();
+            leitorDePaginas.close();
         }
-        leitorDePaginas.close();
         return quantidadeDePaginasDoArquivoDeSaida;
     }
 
