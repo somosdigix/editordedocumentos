@@ -43,6 +43,8 @@ public class PdfUtils {
 		}
 	}
 
+	// TODO avaliar opção de uso de memória para os dois métodos de união de arquivo, talvez receber como parâmetro
+	//  pode ser mais performático em algumas situações usando arquivos temporários
 	public static File unirArquivosPdf(String nomeDoArquivoDeSaida, File... arquivosPdf) throws IOException {
 		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
 		String nomeDoArquivoDeSaidaComExtensao = nomeDoArquivoDeSaida + EXTENSAO_DO_ARQUIVO;
@@ -50,8 +52,19 @@ public class PdfUtils {
 		for (File arquivo : arquivosPdf) {
 			pdfMergerUtility.addSource(arquivo);
 		}
-		// TODO avaliar opção de uso de memória, talvez receber como parâmetro
 		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
 		return new File(nomeDoArquivoDeSaidaComExtensao);
+	}
+
+	public static byte[] unirArquivosPdf(byte[]... arquivosPdf) throws IOException {
+		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+		ByteArrayOutputStream pdfDeSaidaOutputStream = new ByteArrayOutputStream();
+		pdfMergerUtility.setDestinationStream(pdfDeSaidaOutputStream);
+		for (byte[] arquivo : arquivosPdf) {
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arquivo);
+			pdfMergerUtility.addSource(byteArrayInputStream);
+		}
+		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		return pdfDeSaidaOutputStream.toByteArray();
 	}
 }

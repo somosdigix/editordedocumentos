@@ -41,11 +41,11 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorio() throws Exception {
+    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComFiles() throws Exception {
         Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
         File primeiroArquivoPDF = new File(pathDoRelatorio.toString());
         File segundoArquivoPDF = new File(pathDoRelatorio.toString());
-        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(primeiroArquivoPDF,segundoArquivoPDF);
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(primeiroArquivoPDF, segundoArquivoPDF);
 
         String nomeDoArquivoDeSaida = "arquivoDeSaida";
         arquivoDeSaida = PdfUtils.unirArquivosPdf(nomeDoArquivoDeSaida, primeiroArquivoPDF, segundoArquivoPDF);
@@ -57,19 +57,47 @@ public class PdfUtilsTest {
         assertEquals(EXTENSAO_DO_ARQUIVO_ESPERADA, extensaoDoArquivoConvertido);
     }
 
+
+    @Test
+    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComByteArrays() throws Exception {
+        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoRelatorio.toString()), new File(pathDoRelatorio.toString()));
+        byte[] primeiroArquivoPDF = Files.readAllBytes(pathDoRelatorio);
+        byte[] segundoArquivoPDF = Files.readAllBytes(pathDoRelatorio);
+
+
+        byte[] arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
+        Integer quantidadeDePaginasDoArquivoDeSaida = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(arquivoDeSaida);
+
+        assertNotNull(arquivoDeSaida);
+        assertEquals(quantidadeDePaginasEsperada, quantidadeDePaginasDoArquivoDeSaida);
+    }
+
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(File... documentos) throws IOException {
         int quantidadeDePaginasDoArquivoDeSaida = 0;
-        PDDocument leitorDePaginas;
         for (File documento : documentos) {
             byte[] bytesDoDocumento = Files.readAllBytes(documento.toPath());
-            leitorDePaginas = PDDocument.load(bytesDoDocumento);
-            quantidadeDePaginasDoArquivoDeSaida += leitorDePaginas.getNumberOfPages();
-            leitorDePaginas.close();
+            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
         }
         return quantidadeDePaginasDoArquivoDeSaida;
     }
 
-    private String obterExtensaoDoAquivo(File arquivoDeSaida){
+    private static int calcularQuantidadeDePaginasDeUmDocumento(byte[] bytesDoDocumento) throws IOException {
+        PDDocument leitorDePaginas = PDDocument.load(bytesDoDocumento);
+        int quantidadeDePaginasDoArquivoDeSaida = leitorDePaginas.getNumberOfPages();
+        leitorDePaginas.close();
+        return quantidadeDePaginasDoArquivoDeSaida;
+    }
+
+    private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(byte[]... documentos) throws IOException {
+        int quantidadeDePaginasDoArquivoDeSaida = 0;
+        for (byte[] bytesDoDocumento : documentos) {
+            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
+        }
+        return quantidadeDePaginasDoArquivoDeSaida;
+    }
+
+    private String obterExtensaoDoAquivo(File arquivoDeSaida) {
         return URLConnection.guessContentTypeFromName(arquivoDeSaida.getName());
     }
 
