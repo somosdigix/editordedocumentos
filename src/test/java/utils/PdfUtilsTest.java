@@ -57,7 +57,6 @@ public class PdfUtilsTest {
         assertEquals(EXTENSAO_DO_ARQUIVO_ESPERADA, extensaoDoArquivoConvertido);
     }
 
-
     @Test
     public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComByteArrays() throws Exception {
         Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));

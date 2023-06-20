@@ -7,6 +7,7 @@ import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class PdfUtils {
 
@@ -60,10 +61,8 @@ public class PdfUtils {
 		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
 		ByteArrayOutputStream pdfDeSaidaOutputStream = new ByteArrayOutputStream();
 		pdfMergerUtility.setDestinationStream(pdfDeSaidaOutputStream);
-		for (byte[] arquivo : arquivosPdf) {
-			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arquivo);
-			pdfMergerUtility.addSource(byteArrayInputStream);
-		}
+		Arrays.stream(arquivosPdf).map(ByteArrayInputStream::new)
+				.forEachOrdered(pdfMergerUtility::addSource);
 		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
 		return pdfDeSaidaOutputStream.toByteArray();
 	}
