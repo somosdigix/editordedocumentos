@@ -73,6 +73,12 @@
             <organization>com.github.com/caiosuzuki</organization>
             <organizationUrl>https://github.com/caiosuzuki</organizationUrl>
         </developer>
+        <developer>
+            <name>Adriano Wahl</name>
+            <email>adriano.wah@gmail.com</email>
+            <organization>com.github.com/adrianokw</organization>
+            <organizationUrl>https://github.com/adrianokw</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
