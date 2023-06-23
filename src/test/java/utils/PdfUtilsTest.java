@@ -1,21 +1,18 @@
 package utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.junit.After;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
-import com.itextpdf.text.List;
-import com.itextpdf.text.pdf.PdfReader;
-import org.junit.After;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PdfUtilsTest {
 
@@ -44,11 +41,11 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorio() throws Exception {
+    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComFiles() throws Exception {
         Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
         File primeiroArquivoPDF = new File(pathDoRelatorio.toString());
         File segundoArquivoPDF = new File(pathDoRelatorio.toString());
-        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(primeiroArquivoPDF,segundoArquivoPDF);
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(primeiroArquivoPDF, segundoArquivoPDF);
 
         String nomeDoArquivoDeSaida = "arquivoDeSaida";
         arquivoDeSaida = PdfUtils.unirArquivosPdf(nomeDoArquivoDeSaida, primeiroArquivoPDF, segundoArquivoPDF);
@@ -60,19 +57,46 @@ public class PdfUtilsTest {
         assertEquals(EXTENSAO_DO_ARQUIVO_ESPERADA, extensaoDoArquivoConvertido);
     }
 
+    @Test
+    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComByteArrays() throws Exception {
+        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoRelatorio.toString()), new File(pathDoRelatorio.toString()));
+        byte[] primeiroArquivoPDF = Files.readAllBytes(pathDoRelatorio);
+        byte[] segundoArquivoPDF = Files.readAllBytes(pathDoRelatorio);
+
+
+        byte[] arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
+        Integer quantidadeDePaginasDoArquivoDeSaida = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(arquivoDeSaida);
+
+        assertNotNull(arquivoDeSaida);
+        assertEquals(quantidadeDePaginasEsperada, quantidadeDePaginasDoArquivoDeSaida);
+    }
+
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(File... documentos) throws IOException {
-        Integer quantidadeDePaginasDoArquivoDeSaida = 0;
-        PdfReader leitorDePaginas = null;
-        for (File documento : Arrays.asList(documentos)) {
+        int quantidadeDePaginasDoArquivoDeSaida = 0;
+        for (File documento : documentos) {
             byte[] bytesDoDocumento = Files.readAllBytes(documento.toPath());
-            leitorDePaginas = new PdfReader(bytesDoDocumento);
-            quantidadeDePaginasDoArquivoDeSaida += leitorDePaginas.getNumberOfPages();
+            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
         }
+        return quantidadeDePaginasDoArquivoDeSaida;
+    }
+
+    private static int calcularQuantidadeDePaginasDeUmDocumento(byte[] bytesDoDocumento) throws IOException {
+        PDDocument leitorDePaginas = PDDocument.load(bytesDoDocumento);
+        int quantidadeDePaginasDoArquivoDeSaida = leitorDePaginas.getNumberOfPages();
         leitorDePaginas.close();
         return quantidadeDePaginasDoArquivoDeSaida;
     }
 
-    private String obterExtensaoDoAquivo(File arquivoDeSaida){
+    private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(byte[]... documentos) throws IOException {
+        int quantidadeDePaginasDoArquivoDeSaida = 0;
+        for (byte[] bytesDoDocumento : documentos) {
+            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
+        }
+        return quantidadeDePaginasDoArquivoDeSaida;
+    }
+
+    private String obterExtensaoDoAquivo(File arquivoDeSaida) {
         return URLConnection.guessContentTypeFromName(arquivoDeSaida.getName());
     }
 

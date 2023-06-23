@@ -5,7 +5,7 @@
 
     <groupId>br.com.digix</groupId>
     <artifactId>editordedocumento</artifactId>
-    <version>2.2.6</version>
+    <version>2.2.7</version>
     <name>Editor De Documento</name>
     <description>Framework desenvolvido para gerar relatorios no formato docx com mais facilidade</description>
     <url>https://github.com/somosdigix/editordedocumentos</url>
@@ -31,7 +31,6 @@
         <!-- Versão das dependencias -->
         <junit>4.13.1</junit>
         <org.apache.poi>3.14</org.apache.poi>
-        <com.itextpdf>5.5.9</com.itextpdf>
         <org.apache.poi.xwpf.converter.pdf>1.0.4</org.apache.poi.xwpf.converter.pdf>
         <fr.opensagres.xdocreport>1.0.5</fr.opensagres.xdocreport>
     </properties>
@@ -74,6 +73,12 @@
             <organization>com.github.com/caiosuzuki</organization>
             <organizationUrl>https://github.com/caiosuzuki</organizationUrl>
         </developer>
+        <developer>
+            <name>Adriano Wahl</name>
+            <email>adriano.wah@gmail.com</email>
+            <organization>com.github.com/adrianokw</organization>
+            <organizationUrl>https://github.com/adrianokw</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
@@ -100,7 +105,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <encoding>${project.build.souvrceEnconding}</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
@@ -220,9 +225,9 @@
             <version>${org.apache.poi}</version>
         </dependency>
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>${com.itextpdf}</version>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.28</version>
         </dependency>
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>

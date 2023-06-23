@@ -1,30 +1,23 @@
 package utils;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfReader;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PdfUtils {
 
 	private static final String EXTENSAO_DO_ARQUIVO = ".pdf";
-	private static File arquivoConvertido;
 
 	public static File converterDocxParaPdf(File arquivoDocx, String nomeDoArquivoDeSaida, PdfOptions... opcoes)
 			throws ErroAoConverterDocxParaPdf {
 		try {
 			String nomeDoArquivo = nomeDoArquivoDeSaida.concat(EXTENSAO_DO_ARQUIVO);
-			arquivoConvertido = new File(nomeDoArquivo);
+			File arquivoConvertido = new File(nomeDoArquivo);
 			InputStream inputStream = new FileInputStream(arquivoDocx);
 			XWPFDocument docx = new XWPFDocument(inputStream);
 			PdfOptions options = null;
@@ -33,15 +26,15 @@ public class PdfUtils {
 			}
 			OutputStream pdfDeSaidaOutputStream = new FileOutputStream(arquivoConvertido);
 			PdfConverter.getInstance().convert(docx, pdfDeSaidaOutputStream, options);
+			return arquivoConvertido;
 		} catch (Exception exception) {
 			throw new ErroAoConverterDocxParaPdf();
 		}
-		return arquivoConvertido;
 	}
 
 	public static byte[] converterDocxParaPdf(byte[] dados) throws ErroAoConverterDocxParaPdf {
 		try {
-			ByteArrayInputStream byteArrayInputStream= new ByteArrayInputStream(dados);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(dados);
 			XWPFDocument docx = new XWPFDocument(byteArrayInputStream);
 			ByteArrayOutputStream pdfDeSaidaOutputStream = new ByteArrayOutputStream();
 			PdfConverter.getInstance().convert(docx, pdfDeSaidaOutputStream, PdfOptions.create());
@@ -51,47 +44,26 @@ public class PdfUtils {
 		}
 	}
 
-	public static File unirArquivosPdf(String nomeDoArquivoDeSaida, File... arquivosPdf) throws IOException, DocumentException {
-		List<byte[]> documentos = lerBytesDosArquivos(Arrays.asList(arquivosPdf));
-		Document novoDocumento = new Document();
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		PdfCopy copiadorDeDocumento = new PdfCopy(novoDocumento, byteArrayOutputStream);
-
-		novoDocumento.open();
-		documentos.forEach(documento -> concatenarDocumento(copiadorDeDocumento, documento));
-		novoDocumento.close();
-
-		File arquivoDeSaida = new File(nomeDoArquivoDeSaida + EXTENSAO_DO_ARQUIVO);
-		FileOutputStream foFileOutputStream = new FileOutputStream(arquivoDeSaida);
-		foFileOutputStream.write(byteArrayOutputStream.toByteArray());
-		foFileOutputStream.close();
-
-		return arquivoDeSaida;
-	}
-
-	private static List<byte[]> lerBytesDosArquivos(List<File> arquivos) throws IOException {
-		return arquivos.stream().filter(file -> file != null).map(file -> adicionarBytesDosArquivos(file)).collect(Collectors.toList());
-	}
-
-	private static byte[] adicionarBytesDosArquivos(File file) {
-		try {
-			return Files.readAllBytes(file.toPath());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+	// TODO avaliar opção de uso de memória para os dois métodos de união de arquivo, talvez receber como parâmetro
+	//  pode ser mais performático em algumas situações usando arquivos temporários
+	public static File unirArquivosPdf(String nomeDoArquivoDeSaida, File... arquivosPdf) throws IOException {
+		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+		String nomeDoArquivoDeSaidaComExtensao = nomeDoArquivoDeSaida + EXTENSAO_DO_ARQUIVO;
+		pdfMergerUtility.setDestinationFileName(nomeDoArquivoDeSaidaComExtensao);
+		for (File arquivo : arquivosPdf) {
+			pdfMergerUtility.addSource(arquivo);
 		}
+		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		return new File(nomeDoArquivoDeSaidaComExtensao);
 	}
 
-	private static void concatenarDocumento(PdfCopy copiadorDeDocumento, byte[] documento) {
-		try {
-			PdfReader leitorDePaginas = new PdfReader(documento);
-			for (int paginaAtualDoDocumento = 1; paginaAtualDoDocumento <= leitorDePaginas.getNumberOfPages(); paginaAtualDoDocumento++) {
-				PdfImportedPage primeiraPagina = copiadorDeDocumento.getImportedPage(leitorDePaginas, paginaAtualDoDocumento);
-				copiadorDeDocumento.addPage(primeiraPagina);
-			}
-			copiadorDeDocumento.freeReader(leitorDePaginas);
-			leitorDePaginas.close();
-		} catch (Exception excecao) {
-			throw new RuntimeException(excecao);
-		}
+	public static byte[] unirArquivosPdf(byte[]... arquivosPdf) throws IOException {
+		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+		ByteArrayOutputStream pdfDeSaidaOutputStream = new ByteArrayOutputStream();
+		pdfMergerUtility.setDestinationStream(pdfDeSaidaOutputStream);
+		Arrays.stream(arquivosPdf).map(ByteArrayInputStream::new)
+				.forEachOrdered(pdfMergerUtility::addSource);
+		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		return pdfDeSaidaOutputStream.toByteArray();
 	}
 }
