@@ -40,13 +40,21 @@ versões:
   <version>2.2.6</version>
 </dependency>
  ```
- ultima versão: 
  - v2.2.7 (31/05/2023)
   ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
   <version>2.2.7</version>
+</dependency>
+ ```
+  última versão: 
+ - v2.2.8 (04/07/2023)
+   ``` sh
+<dependency>
+  <groupId>br.com.digix</groupId>
+  <artifactId>editordedocumento</artifactId>
+  <version>2.2.8</version>
 </dependency>
  ```
  
@@ -90,6 +98,9 @@ versões:
 
  - V2.2.7  
   Remoção da lib iTextPDF em favor da lib PDFBox.
+  
+ - V2.2.8
+  Inclusão de sobrecargas do método unirArquivosPdf da classe PdfUtils para lidar com ByteBuffer.
 
 aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
 https://search.maven.org/artifact/br.com.digix/editordedocumento
