@@ -49,12 +49,12 @@ versões:
 </dependency>
  ```
   última versão: 
- - v2.2.8 (04/07/2023)
+ - v2.3.0 (04/07/2023)
    ``` sh
 <dependency>
   <groupId>br.com.digix</groupId>
   <artifactId>editordedocumento</artifactId>
-  <version>2.2.8</version>
+  <version>2.3.0</version>
 </dependency>
  ```
  
@@ -99,7 +99,7 @@ versões:
  - V2.2.7  
   Remoção da lib iTextPDF em favor da lib PDFBox.
   
- - V2.2.8
+ - V2.3.0
   Inclusão de sobrecargas do método unirArquivosPdf da classe PdfUtils para lidar com ByteBuffer.
 
 aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
