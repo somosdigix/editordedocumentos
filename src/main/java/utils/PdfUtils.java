@@ -7,7 +7,10 @@ import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class PdfUtils {
 
@@ -58,12 +61,27 @@ public class PdfUtils {
 	}
 
 	public static byte[] unirArquivosPdf(byte[]... arquivosPdf) throws IOException {
+		Stream<byte[]> streamDosBytesDosArquivosPdf = Arrays.stream(arquivosPdf);
+		return unirArquivosPdf(streamDosBytesDosArquivosPdf);
+	}
+
+	private static byte[] unirArquivosPdf(Stream<byte[]> streamDosBytesDosArquivosPdf) throws IOException {
 		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+		streamDosBytesDosArquivosPdf.map(ByteArrayInputStream::new)
+				.forEachOrdered(pdfMergerUtility::addSource);
 		ByteArrayOutputStream pdfDeSaidaOutputStream = new ByteArrayOutputStream();
 		pdfMergerUtility.setDestinationStream(pdfDeSaidaOutputStream);
-		Arrays.stream(arquivosPdf).map(ByteArrayInputStream::new)
-				.forEachOrdered(pdfMergerUtility::addSource);
 		pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
 		return pdfDeSaidaOutputStream.toByteArray();
+	}
+
+	public static ByteBuffer unirArquivosPdf(List<ByteBuffer> arquivosPdf) throws IOException {
+		Stream<byte[]> streamDosBytesDosArquivosPdf = arquivosPdf.stream().map(ByteBuffer::array);
+		byte[] bytesDoArquivoUnificado = unirArquivosPdf(streamDosBytesDosArquivosPdf);
+		return ByteBuffer.wrap(bytesDoArquivoUnificado);
+	}
+
+	public static ByteBuffer unirArquivosPdf(ByteBuffer... arquivosPdf) throws IOException {
+		return unirArquivosPdf(Arrays.asList(arquivosPdf));
 	}
 }
