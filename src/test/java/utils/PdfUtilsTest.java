@@ -67,7 +67,6 @@ public class PdfUtilsTest {
         byte[] primeiroArquivoPDF = Files.readAllBytes(pathDoArquivo);
         byte[] segundoArquivoPDF = Files.readAllBytes(pathDoArquivo);
 
-
         byte[] arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
         Integer quantidadeDePaginasDoArquivoDeSaida = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(arquivoDeSaida);
 
@@ -96,7 +95,6 @@ public class PdfUtilsTest {
         Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoArquivo.toString()), new File(pathDoArquivo.toString()));
         ByteBuffer primeiroArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
         ByteBuffer segundoArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
-
 
         ByteBuffer arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
         Integer quantidadeDePaginasDoArquivoDeSaida = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(arquivoDeSaida);
