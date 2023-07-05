@@ -25,8 +25,8 @@ public class PdfUtilsTest {
 
     @Test
     public void deveConverterUmArquivoComExtensaoDocxParaPdf() throws Exception {
-        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.docx"));
-        File arquivoDocx = new File(pathDoRelatorio.toString());
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.docx"));
+        File arquivoDocx = new File(pathDoArquivo.toString());
 
         String nomeDoArquivoDeSaida = "arquivoDeSaida";
         arquivoDeSaida = PdfUtils.converterDocxParaPdf(arquivoDocx, nomeDoArquivoDeSaida);
@@ -44,10 +44,10 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComFiles() throws Exception {
-        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
-        File primeiroArquivoPDF = new File(pathDoRelatorio.toString());
-        File segundoArquivoPDF = new File(pathDoRelatorio.toString());
+    public void deveUnirVariosArquivosPdfEmUmUnicoArquivoComFiles() throws Exception {
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        File primeiroArquivoPDF = new File(pathDoArquivo.toString());
+        File segundoArquivoPDF = new File(pathDoArquivo.toString());
         Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(primeiroArquivoPDF, segundoArquivoPDF);
 
         String nomeDoArquivoDeSaida = "arquivoDeSaida";
@@ -61,11 +61,11 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComByteArrays() throws Exception {
-        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
-        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoRelatorio.toString()), new File(pathDoRelatorio.toString()));
-        byte[] primeiroArquivoPDF = Files.readAllBytes(pathDoRelatorio);
-        byte[] segundoArquivoPDF = Files.readAllBytes(pathDoRelatorio);
+    public void deveUnirVariosArquivosPdfEmUmUnicoArquivoComByteArrays() throws Exception {
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoArquivo.toString()), new File(pathDoArquivo.toString()));
+        byte[] primeiroArquivoPDF = Files.readAllBytes(pathDoArquivo);
+        byte[] segundoArquivoPDF = Files.readAllBytes(pathDoArquivo);
 
 
         byte[] arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
@@ -76,11 +76,11 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComListaDeByteBuffers() throws Exception {
-        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
-        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoRelatorio.toString()), new File(pathDoRelatorio.toString()));
-        ByteBuffer primeiroArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoRelatorio));
-        ByteBuffer segundoArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoRelatorio));
+    public void deveUnirVariosArquivosPdfEmUmUnicoArquivoComListaDeByteBuffers() throws Exception {
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoArquivo.toString()), new File(pathDoArquivo.toString()));
+        ByteBuffer primeiroArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
+        ByteBuffer segundoArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
         List<ByteBuffer> listaDeArquivosParaUnir = Arrays.asList(primeiroArquivoPDF, segundoArquivoPDF);
 
         ByteBuffer arquivoDeSaida = PdfUtils.unirArquivosPdf(listaDeArquivosParaUnir);
@@ -91,11 +91,11 @@ public class PdfUtilsTest {
     }
 
     @Test
-    public void deveUnirVariosArquivosPdfEmUmUnicoRelatorioComByteBuffers() throws Exception {
-        Path pathDoRelatorio = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
-        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoRelatorio.toString()), new File(pathDoRelatorio.toString()));
-        ByteBuffer primeiroArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoRelatorio));
-        ByteBuffer segundoArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoRelatorio));
+    public void deveUnirVariosArquivosPdfEmUmUnicoArquivoComByteBuffers() throws Exception {
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTeste.pdf"));
+        Integer quantidadeDePaginasEsperada = calcularQuantidadeDePaginasDeUmOuMaisDocumentos(new File(pathDoArquivo.toString()), new File(pathDoArquivo.toString()));
+        ByteBuffer primeiroArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
+        ByteBuffer segundoArquivoPDF = ByteBuffer.wrap(Files.readAllBytes(pathDoArquivo));
 
 
         ByteBuffer arquivoDeSaida = PdfUtils.unirArquivosPdf(primeiroArquivoPDF, segundoArquivoPDF);
