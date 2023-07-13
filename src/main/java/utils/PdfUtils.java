@@ -2,6 +2,7 @@ package utils;
 
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -83,5 +84,12 @@ public class PdfUtils {
 
 	public static ByteBuffer unirArquivosPdf(ByteBuffer... arquivosPdf) throws IOException {
 		return unirArquivosPdf(Arrays.asList(arquivosPdf));
+	}
+
+	public static int obterQuantidadeDePaginas(byte[] bytesDoArquivoPdf) throws IOException {
+		PDDocument leitorDePaginas = PDDocument.load(bytesDoArquivoPdf);
+		int quantidadeDePaginas = leitorDePaginas.getNumberOfPages();
+		leitorDePaginas.close();
+		return quantidadeDePaginas;
 	}
 }
