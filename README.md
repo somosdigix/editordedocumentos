@@ -27,34 +27,42 @@ versões:
  - v2.2.4 (29/05/2019)
   ``` sh
 <dependency>
-  <groupId>br.com.digix</groupId>
-  <artifactId>editordedocumento</artifactId>
-  <version>2.2.4</version>
+   <groupId>br.com.digix</groupId>
+   <artifactId>editordedocumento</artifactId>
+   <version>2.2.4</version>
 </dependency>
  ```
  - v2.2.6 (02/08/2021)
   ``` sh
 <dependency>
-  <groupId>br.com.digix</groupId>
-  <artifactId>editordedocumento</artifactId>
-  <version>2.2.6</version>
+   <groupId>br.com.digix</groupId>
+   <artifactId>editordedocumento</artifactId>
+   <version>2.2.6</version>
 </dependency>
  ```
  - v2.2.7 (31/05/2023)
   ``` sh
 <dependency>
-  <groupId>br.com.digix</groupId>
-  <artifactId>editordedocumento</artifactId>
-  <version>2.2.7</version>
+   <groupId>br.com.digix</groupId>
+   <artifactId>editordedocumento</artifactId>
+   <version>2.2.7</version>
 </dependency>
  ```
-  última versão: 
  - v2.3.0 (04/07/2023)
-   ``` sh
+  ``` sh
 <dependency>
-  <groupId>br.com.digix</groupId>
-  <artifactId>editordedocumento</artifactId>
-  <version>2.3.0</version>
+   <groupId>br.com.digix</groupId>
+   <artifactId>editordedocumento</artifactId>
+   <version>2.3.0</version>
+</dependency>
+ ```
+   última versão: 
+  - v2.4.0 (13/07/2023)
+  ``` sh
+<dependency>
+   <groupId>br.com.digix</groupId>
+   <artifactId>editordedocumento</artifactId>
+   <version>2.4.0</version>
 </dependency>
  ```
  
@@ -99,8 +107,16 @@ versões:
  - V2.2.7  
   Remoção da lib iTextPDF em favor da lib PDFBox.
   
- - V2.3.0
+ - V2.3.0  
   Inclusão de sobrecargas do método unirArquivosPdf da classe PdfUtils para lidar com ByteBuffer.
+  
+ - V2.4.0  
+  Agora é possível obter a quantidade de páginas de um arquivo pdf:
+  ``` sh
+byte[] bytesDoArquivo = Files.readAllBytes(pathDoArquivo);
+
+int quantidadeDePaginasObtida = PdfUtils.obterQuantidadeDePaginas(bytesDoArquivo);
+  ```
 
 aqui você pode encontrar esse framework compilado para outras liguagens, como Scala, Kotlin, Groovy...
 https://search.maven.org/artifact/br.com.digix/editordedocumento
