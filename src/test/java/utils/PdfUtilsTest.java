@@ -102,27 +102,31 @@ public class PdfUtilsTest {
         assertNotNull(arquivoDeSaida);
         assertEquals(quantidadeDePaginasEsperada, quantidadeDePaginasDoArquivoDeSaida);
     }
+    
+    @Test
+    public void deveObterAQuantidadeDePaginasDoArquivo() throws Exception {
+        Path pathDoArquivo = Paths.get(PATH_RESOURCES_DOCUMENTOS_DE_TESTE.concat("documentoDeTesteDeVariasPaginas.pdf"));
+        int quantidadeDePaginasEsperada = 4;
+        byte[] bytesDoArquivo = Files.readAllBytes(pathDoArquivo);
+
+        int quantidadeDePaginasObtida = PdfUtils.obterQuantidadeDePaginas(bytesDoArquivo);
+
+        assertEquals(quantidadeDePaginasEsperada, quantidadeDePaginasObtida);
+    }
 
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(File... documentos) throws IOException {
         int quantidadeDePaginasDoArquivoDeSaida = 0;
         for (File documento : documentos) {
             byte[] bytesDoDocumento = Files.readAllBytes(documento.toPath());
-            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
+            quantidadeDePaginasDoArquivoDeSaida += PdfUtils.obterQuantidadeDePaginas(bytesDoDocumento);
         }
-        return quantidadeDePaginasDoArquivoDeSaida;
-    }
-
-    private static int calcularQuantidadeDePaginasDeUmDocumento(byte[] bytesDoDocumento) throws IOException {
-        PDDocument leitorDePaginas = PDDocument.load(bytesDoDocumento);
-        int quantidadeDePaginasDoArquivoDeSaida = leitorDePaginas.getNumberOfPages();
-        leitorDePaginas.close();
         return quantidadeDePaginasDoArquivoDeSaida;
     }
 
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(byte[]... documentos) throws IOException {
         int quantidadeDePaginasDoArquivoDeSaida = 0;
         for (byte[] bytesDoDocumento : documentos) {
-            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(bytesDoDocumento);
+            quantidadeDePaginasDoArquivoDeSaida += PdfUtils.obterQuantidadeDePaginas(bytesDoDocumento);
         }
         return quantidadeDePaginasDoArquivoDeSaida;
     }
@@ -130,7 +134,7 @@ public class PdfUtilsTest {
     private Integer calcularQuantidadeDePaginasDeUmOuMaisDocumentos(ByteBuffer... documentos) throws IOException {
         int quantidadeDePaginasDoArquivoDeSaida = 0;
         for (ByteBuffer documento : documentos) {
-            quantidadeDePaginasDoArquivoDeSaida += calcularQuantidadeDePaginasDeUmDocumento(documento.array());
+            quantidadeDePaginasDoArquivoDeSaida += PdfUtils.obterQuantidadeDePaginas(documento.array());
         }
         return quantidadeDePaginasDoArquivoDeSaida;
     }
